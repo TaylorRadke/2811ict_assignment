@@ -1,0 +1,26 @@
+{
+  "name": "2811_ict_assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/server/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TaylorRadke/2811ict_assignment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TaylorRadke/2811ict_assignment/issues"
+  },
+  "homepage": "https://github.com/TaylorRadke/2811ict_assignment#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "connect": "^3.6.6",
+    "express": "^4.16.3",
+    "fs": "0.0.1-security",
+    "socket.io": "^2.1.1"
+  }
+}

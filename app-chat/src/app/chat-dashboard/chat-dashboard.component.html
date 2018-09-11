@@ -1,0 +1,58 @@
+<div class="container">
+  <div></div>
+  <div id="header">
+      <h2>Welcome, {{username}}</h2>
+      <button (click)="logout()">Logout</button>
+      &nbsp;
+      <button *ngIf="userHasPermission" (click)="showSettings('user')">User Settings</button>
+      &nbsp;  
+      <button *ngIf="userHasPermission" (click)="showSettings('group')">Group Settings</button>
+      &nbsp;
+      <button *ngIf="userHasPermission" (click)="showSettings('channel')">Channel Settings</button>
+  </div>
+  <div></div>
+  <div id="userList">
+    <table id="userTable">
+      <tr>
+        <th>
+          <b>Users</b>
+        </th>
+      <br>
+      <br>
+      </tr>
+      <tr style="color:yellow" *ngFor="let user of users">{{user}}</tr><br>
+    </table>
+  </div>
+  <div></div>
+  <div></div>
+  <div id="groupList">
+      <table>
+        <tr>
+          <th>Groups</th>
+        </tr>
+        <tr *ngFor="let group of groups;let i = index">
+          <button class="link" (click)="displayChannels(groups[i].group)">{{groups[i].group}}</button>
+        </tr>
+      </table>
+    </div>
+    <div></div>
+  <div class="settings">
+      <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>
+      <app-group-settings *ngIf="settingsSelect == 'group'"></app-group-settings>
+      <app-user-settings  *ngIf="settingsSelect == 'user'"></app-user-settings>
+  </div>
+  <div>
+    <br>
+    <br>
+    <table *ngIf="channels">
+      <tr>
+        <th>Channels</th>
+      </tr>
+      <tr *ngFor="let channel of channels">
+        <button class="link">{{channel.channel}}</button>
+      </tr>
+    </table>
+  </div>
+</div> 
+  
+

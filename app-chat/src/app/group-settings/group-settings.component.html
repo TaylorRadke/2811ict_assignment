@@ -1,0 +1,49 @@
+<div>
+    <div class="settings">
+        Create group<br><br>
+        <input type="text" [(ngModel)]="groupCreate" placeholder="group name">&nbsp;
+        <button *ngIf="groupCreate" (click)="createGroup()">Confirm</button><br><br>
+    </div>
+    <div *ngIf="groups"><br><br>
+      <div *ngIf="hasGroups" class="settings">
+          Delete group<br><br>
+          Group:
+          <select [(ngModel)]="groupDelete" >
+            <option *ngFor="let group of groups;let i = index" [value]="groups[i].group">{{groups[i].group}}</option>
+          </select>&nbsp;
+          <button *ngIf='groupDelete' (click)="deleteGroup()">Confirm</button><br><br>
+      </div>
+
+      <br>Add user to group<br><br>
+      <p *ngIf="!hasGroups">There are no groups to display<br><br></p>
+      <div *ngIf="hasGroups" class="settings">
+        Group:&nbsp;
+        <select  [(ngModel)]="groupAddUser">
+          <option *ngFor="let group of groups;let i = index" [value]="groups[i].group">{{groups[i].group}}</option>
+        </select><br><br>
+        User:
+        <select [(ngModel)]="userAdd">
+          <option *ngFor="let user of users" [value]="user">{{user}}</option>
+        </select>&nbsp;&nbsp;
+        <button *ngIf="groupAddUser && userAdd" (click)="addUser()">Confirm</button>
+      <br><br>
+    </div>
+
+      <br>Remove user from group<br><br>
+      <p *ngIf="!hasGroups">There are no groups to display<br><br></p>
+
+      <div *ngIf="hasGroups" class="settings">
+        Group:&nbsp;<select [(ngModel)]="groupUserRemove" *ngIf="groups" (click)="checkUsersInGroup()">
+          <option *ngFor="let group of groups; let i = index" [value]="i">{{groups[i].group}}</option>
+        </select><br>
+
+        <p *ngIf="groupUserRemove && !usersInGroup"><br>There are no users in this group to display</p>
+        <div *ngIf="groupUserRemove && usersInGroup">
+          User:&nbsp;
+          <select [(ngModel)]="userRemove" *ngIf="groupUserRemove && usersInGroup">
+            <option *ngFor="let users of groups[groupUserRemove].users;let i = index" [value]="groups[groupSelected].users[i]">{{groups[groupSelected].users[i]}}</option>
+          </select>&nbsp;&nbsp;
+          <button *ngIf="groupUserRemove && userRemove && usersInGroup" (click)="removeUser()">Confirm</button>
+      </div>
+    </div>  
+</div>

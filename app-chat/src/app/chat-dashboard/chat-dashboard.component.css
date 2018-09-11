@@ -1,8 +1,8 @@
 .container { 
     display:grid;
     grid-template-columns: auto auto auto;
-    grid-row-gap: 25%;
-    grid-column-gap: 25%;
+    grid-row-gap: 5em;
+    grid-column-gap: 5em;
 }
 
 #userTable {
@@ -21,4 +21,12 @@ button.link {
 
 div.header{
     text-align: center;
+}
+
+#channelButton {
+    color: purple;
+}
+
+#groupButton {
+    color: green;
 }

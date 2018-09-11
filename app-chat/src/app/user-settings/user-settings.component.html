@@ -17,7 +17,7 @@
     <button *ngIf="newUsername && newUserEmail" (click)="createUser()">Confirm</button>
   </div>
   <div *ngIf="superUser">
-    Delete user<br><br>
+    <br>Delete user<br><br>
     User : 
     <select [(ngModel)]="userDelete">
       <option *ngFor="let user of users" [value]='user'>{{user}}</option>

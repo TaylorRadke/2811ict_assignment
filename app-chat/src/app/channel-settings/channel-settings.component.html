@@ -1,6 +1,6 @@
 <div *ngIf="hasGroups">
   <div>
-    <br>Create Channel:<br><br>
+    Create Channel:<br><br>
     Group:&nbsp;&nbsp;<select [(ngModel)]="selectGroup">
       <option *ngFor="let group of groups;let i = index" [value]="groups[i].group">{{groups[i].group}}</option>
     </select><br><br>
@@ -31,7 +31,7 @@
   </div>
   <br><br>
   <div>
-    <br>Add user to channel:<br><br>
+    Add user to channel:<br><br>
     Group&nbsp;&nbsp;<select [(ngModel)]="selectGroup" (change)="getChannels()">
         <option *ngFor="let group of groups;let i = index" [value]="groups[i].group">{{groups[i].group}}</option>
     </select><br><br>
@@ -42,6 +42,5 @@
       <option *ngFor="let user of users" [value]="user">{{user}}</option>
     </select>&nbsp;&nbsp;
     <button *ngIf="selectGroup && selectChannel && selectUser" (click)="addUserChannel()">Confirm</button>
-  </div><br><br>
+  </div>
 </div>
-<p *ngIf="!hasGroups">There are no groups. Please create a group to interact with channels</p>

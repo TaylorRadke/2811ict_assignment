@@ -26,6 +26,7 @@ export class ChatDashboardComponent implements OnInit {
   groupSelected;
   showUsers = false;
   chatDisplay;
+  inChannel = false;
 
   constructor(private socket:SocketService, private router:Router,
     private userManager:UserManagerService, private channelManager:ChannelManagerService,
@@ -96,5 +97,9 @@ export class ChatDashboardComponent implements OnInit {
       this.chatDisplay = true;
       console.log(res);
     });
+  }
+
+  joinChannel(channel:string){
+    this.inChannel = true;
   }
 }

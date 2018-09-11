@@ -11,6 +11,7 @@
       <button *ngIf="userHasPermission" (click)="showSettings('channel')">Channel Settings</button>
   </div>
   <div></div>
+<<<<<<< HEAD
   <div id="userList">
     <table id="userTable">
       <tr>
@@ -54,5 +55,54 @@
     </table>
   </div>
 </div> 
+=======
+  <div>
+      <div id="userList">
+          <table id="userTable">
+            <tr>
+              <th>
+                <b>Users</b>
+              </th>
+            <br>
+            <br>
+            </tr>
+            <tr style="color:yellow" *ngFor="let user of users">{{user}}</tr><br>
+          </table>
+        </div>
+        <div id="groupList">
+            <table>
+              <tr>
+                <th>Groups</th>
+              </tr>
+              <tr *ngFor="let group of groups;let i = index">
+                <button class="link" id="groupButton" (click)="displayChannels(groups[i].group)">{{groups[i].group}}</button>
+              </tr>
+            </table>
+          </div>
+      <div>
+          <br>
+          <table *ngIf="channels">
+            <tr>
+              <th>Channels</th>
+            </tr>
+            <tr *ngFor="let channel of channels">
+              <button id="channelButton" class="link" (click)="joinChannel(channel.channel)">{{channel.channel}}</button>
+            </tr>
+          </table>
+        </div>
+  </div>
+  <div id="chat-box" *ngIf="inChannel">
+    <div style="width: 25em;height: 25em; background:grey"></div>
+    <input style="width:24.5em;" type="text" placeholder="enter message">
+    <button >Send</button>
+  </div>
+  <div class="settings">
+      <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>
+      <app-group-settings *ngIf="settingsSelect == 'group'"></app-group-settings>
+      <app-user-settings  *ngIf="settingsSelect == 'user'"></app-user-settings>
+  </div>
+</div> 
+
+>>>>>>> added css grids
   
 

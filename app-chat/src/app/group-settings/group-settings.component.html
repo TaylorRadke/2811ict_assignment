@@ -4,7 +4,7 @@
         <input type="text" [(ngModel)]="groupCreate" placeholder="group name">&nbsp;
         <button *ngIf="groupCreate" (click)="createGroup()">Confirm</button><br><br>
     </div>
-    <div *ngIf="groups"><br><br>
+    <div *ngIf="groups"><br>
       <div *ngIf="hasGroups" class="settings">
           Delete group<br><br>
           Group:

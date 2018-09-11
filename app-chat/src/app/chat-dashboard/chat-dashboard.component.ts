@@ -45,17 +45,13 @@ export class ChatDashboardComponent implements OnInit {
     });
 
     this.channelManager.userIsIn(localStorage.getItem("username")).subscribe(res=>{
-      console.log("users is in ",res);
-      this.groupsUserIsIn = res["user-in-channels"];
+      this.groups = res["groups"];
     });
 
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
     })
 
-    this.groupManager.getGroups().subscribe(res=>{
-      this.groups = res["groups"];
-    });
 
   }
 

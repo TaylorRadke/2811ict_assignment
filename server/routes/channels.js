@@ -287,7 +287,7 @@ module.exports = function(app,fs){
             if (err) console.log(err);
             else{
                 userObj = JSON.parse(data);
-
+                console.log(username);
                 for (let i = 0; i < userObj.length; i++){
                     if (userObj[i].username == username){
                         userExists = true;
@@ -309,13 +309,13 @@ module.exports = function(app,fs){
                                     }
                                 }
                             }
+                            res.send({
+                                "user":username,
+                                "groups":userInChannels
+                            });
                         }    
                     });
                 }
-                res.send({
-                    "user":username,
-                    "user-in-channels":userInChannels
-                });
             }
         })
 

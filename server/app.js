@@ -26,14 +26,14 @@ fs.readFile('./resources/groups.json','utf-8',function(err){
     }
 });
 
-require('./routes/users')(app,fs);
-require("./routes/groups")(app,fs);
+require('./routes/users.js')(app,fs);
+require("./routes/groups.js")(app,fs);
 require('./routes/channels.js')(app,fs);
 
 //Start server on port 3000;
 http.listen(3000);
 
 //Wild card route for if the user enters an invalid url for server, serves frontend
-app.all('*',function(req,res){
+app.get('/*',function(req,res){
     res.sendFile(path.join(__dirname,"../app-chat/dist/app-chat/index.html"));
 })

@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-[{"username":"super","permissions":"super"},{"email":"taylor@email.com","username":"taylor"},{"email":"john@email.com","username":"john"}]
-=======
-[{"username":"super","permissions":"super"},{"email":"taylor@email.com","username":"taylor","permissions":"group"},{"email":"john@email.com","username":"john"},{"email":"newuser","username":"newuser"}]
->>>>>>> added css grids
+[{"username":"super","permissions":"super"}]

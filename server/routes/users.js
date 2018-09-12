@@ -1,4 +1,5 @@
 module.exports = function(app,fs){
+
     //Get the permissions of a user
     app.get("/api/:username/permissions",function(req,res){
         var userObj;

@@ -1,10 +1,6 @@
 ## Description
 The task of this assignment is to build a chat system with users,groups,channels using Angular,Node.js and Sockets.
-<<<<<<< HEAD
-## Instructions
-=======
 ##Instructions
->>>>>>> c90e047... Added instructions to readme, final buil of angular frontend
 To start server, navigate to the server directory and run app.js with node. To reset groups or users simply delete the groups.json
 or users.json file and restart the server. The server will create the files with initial values.
 

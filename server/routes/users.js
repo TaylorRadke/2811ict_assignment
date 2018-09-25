@@ -68,21 +68,28 @@ module.exports = function(app,dbo){
         var password = req.body.password;
         var authLogin = false;
 
+        dbo.collection("users").findOne({$and:[{"username":username},{"password":password}]},function(err,result){
+            if (err) throw err;
+            else{
+                if (result != null){
+                    authLogin = true;
+                }
+                res.send({"user":username, "authenticated":authLogin});
+                
+            }
+        })
     })
 
-    //User logout, does not delete user from list of users
-    app.post('/api/users/logout',function(req,res){
-        var username = req.body.username;
-        
-        var successfulLogout = false;
-
-    })
-
-    //delete a user from the list of users and all groups and channels that the user is in 
+    //delete a user from the list of users 
     app.delete('/api/users/:username',function(req,res){
-        var userExists = false;
+        
         var user = req.params.username;
-
-
+        
+       dbo.collection("users").deleteOne({"username":user},function(err,result){
+            if (err) throw err;
+            else {
+                res.send({"ok":Boolean(result.result.n)});
+            }
+        });
     });
 }

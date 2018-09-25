@@ -19,11 +19,13 @@ MongoDB.connect(URL,function(err,db){
     require('./routes/users')(app,dbo);
     // require("./routes/groups")(app,dbo);
     // require('./routes/channels.js')(app,dbo);
+
+    //Start server on port 3000;
+    http.listen(3000,function(){
+        console.log("Server listening on port 3000");
+    });
 });
 
-
-//Start server on port 3000;
-http.listen(3000);
 
 //Wild card route for if the user enters an invalid url for server, serves frontend
 // app.all('*',function(req,res){

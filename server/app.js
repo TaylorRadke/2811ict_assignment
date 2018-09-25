@@ -17,7 +17,7 @@ MongoDB.connect(URL,function(err,db){
     dbo = db.db('Chat_app_db');
     console.log("Connected to db");
     require('./routes/users')(app,dbo);
-    // require("./routes/groups")(app,dbo);
+    require("./routes/groups")(app,dbo);
     // require('./routes/channels.js')(app,dbo);
 
     //Start server on port 3000;

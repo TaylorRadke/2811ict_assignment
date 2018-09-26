@@ -18,7 +18,7 @@ MongoDB.connect(URL,function(err,db){
     console.log("Connected to db");
     require('./routes/users')(app,dbo);
     require("./routes/groups")(app,dbo);
-    // require('./routes/channels.js')(app,dbo);
+    require('./routes/channels.js')(app,dbo);
 
     //Start server on port 3000;
     http.listen(3000,function(){

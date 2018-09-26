@@ -67,14 +67,14 @@ module.exports = function(app,dbo){
         var username = req.body.username;
         var password = req.body.password;
         var authLogin = false;
-
-        dbo.collection("users").findOne({$and:[{"username":username},{"password":password}]},function(err,result){
+        console.log(username,password);
+        dbo.collection("users").findOne({"username":username},function(err,result){
             if (err) throw err;
             else{
-                if (result != null){
+                if (result != null && result.password == password){
                     authLogin = true;
                 }
-                res.send({"user":username, "authenticated":authLogin});
+                res.send({"user":username, "authlogin":authLogin});
                 
             }
         })

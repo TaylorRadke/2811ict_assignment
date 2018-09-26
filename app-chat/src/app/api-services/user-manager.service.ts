@@ -28,12 +28,8 @@ export class UserManagerService {
     return this.http.get("/api/"+username+"/permissions");
   }
 
-  login(username:string,email:string){
-    return this.http.post('/api/users/login',{"username":username,"email":email});
-  }
-
-  logout(username:string){
-    return this.http.post("/api/users/logout",{"username":username});
+  login(username:string,password:string){
+    return this.http.post('/api/users/login',{"username":username,"password":password});
   }
 
   deleteUser(username:string){

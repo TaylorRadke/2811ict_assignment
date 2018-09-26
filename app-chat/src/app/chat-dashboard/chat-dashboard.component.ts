@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {SocketService} from '../api-services/socket.service';
 import {Router} from '@angular/router';
 import {UserManagerService} from '../api-services/user-manager.service';
-import { ChannelManagerService } from '../api-services/channel-manager.service';
+import {ChannelManagerService} from '../api-services/channel-manager.service';
 import {GroupManagerService} from '../api-services/group-manager.service';
 
 @Component({
@@ -34,6 +34,9 @@ export class ChatDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.username = localStorage.getItem("username");
+    if (this.username === "undefined"){
+      this.logout();
+    }
     this.chatDisplay = false;
 
     this.userManager.getPermissions(this.username).subscribe(res=>{
@@ -57,14 +60,8 @@ export class ChatDashboardComponent implements OnInit {
 
   //Logout as a user
   logout(){
-    if (confirm("Are you sure you want to logout?")){
-      this.userManager.logout(this.username).subscribe(res=>{
-        if (res["success"]){
-          localStorage.clear();
-          this.router.navigateByUrl('');
-        }
-      })
-    }
+    localStorage.clear();
+    this.router.navigateByUrl('');
   }
 
   showSettings(selectedSetting:string){

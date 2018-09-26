@@ -10,7 +10,7 @@ const URL = "mongodb://localhost:27017/mydb";
 //Apply middleware to app
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-//app.use(express.static(path.join(__dirname,'../app-chat/dist/app-chat/')));
+app.use(express.static(path.join(__dirname,'../app-chat/dist/app-chat/')));
 
 MongoDB.connect(URL,function(err,db){
     if (err) throw err;
@@ -27,7 +27,7 @@ MongoDB.connect(URL,function(err,db){
 });
 
 
-//Wild card route for if the user enters an invalid url for server, serves frontend
+// //Wild card route for if the user enters an invalid url for server, serves frontend
 // app.all('*',function(req,res){
 //     res.sendFile(path.join(__dirname,"../app-chat/dist/app-chat/index.html"));
 // })

@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   username:string;
-  email:string;
+  password:string;
   loginFail = false;
 
   constructor(private userManager:UserManagerService,private router:Router) { }
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   //Login, navigate to chat-dashboard
   login(){
-    this.userManager.login(this.username,this.email).subscribe(res=>{
+    this.userManager.login(this.username,this.password).subscribe(res=>{
       if (res["authlogin"]){
         localStorage.setItem("username",this.username);
         this.router.navigate(['/chat-dashboard']);

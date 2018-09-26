@@ -1,4 +1,5 @@
 <H1>Enter username:</H1>
-<input type="text" [(ngModel)]="username" placeholder="username">&nbsp;&nbsp;
+<input type="text" [(ngModel)]="username" placeholder="username"><br><br>
+<input type="text" [(ngModel)]="password" placeholder="password"><br><br>
 <button (click)="login()">Login</button><br>
 <div *ngIf="loginFail">Sorry, that login did not work, please try again</div>

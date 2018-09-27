@@ -32,13 +32,16 @@ export class ChannelSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.groupManager.getGroups().subscribe(res=>{
-      this.groups = res["groups"];
-      if (this.groups.length > 0) this.hasGroups = true;
-      else this.hasGroups = false;
+      this.groups = [];
+      res["groups"].forEach(element=>{
+        this.groups.push(element.group_name);
+        this.hasGroups = true;
+      })
     });
 
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
+      console.log(res);
     })
   }
 
@@ -70,7 +73,6 @@ export class ChannelSettingsComponent implements OnInit {
 
   //Get users of a channel
   getChannelUsers(){
-    console.log("getting channel users");
     this.channelManager.getChannelUsers(this.selectGroup,this.selectChannel).subscribe(res=>{
       this.channelUsers = res["users"];
     })

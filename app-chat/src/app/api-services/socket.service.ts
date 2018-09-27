@@ -7,11 +7,12 @@ import {Observable} from 'rxjs';
 })
 export class SocketService {
   private url = 'http://localhost:3000';
-  private socket;
+  private socket = io(this.url);
 
   constructor() {}
 
    sendMessage(message){
+     console.log(message);
      this.socket.emit('add-message',message);
    }
 
@@ -20,6 +21,7 @@ export class SocketService {
 
      let observable = new Observable(observer=>{
        this.socket.on("message",(data)=>{
+         console.log(data);
          observer.next(data);
        })
        return ()=>{

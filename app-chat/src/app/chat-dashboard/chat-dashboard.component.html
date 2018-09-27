@@ -50,8 +50,8 @@
     <div id="msg_box">
       <div *ngFor='let msg of messages'>{{msg.text}}</div>
     </div>
-    <input style="width:24.5em;" [value]="message" type="text" placeholder="enter message">
-    <button (click)="sendMessage(message)">Send</button>
+    <input style="width:24.5em;" [(ngModel)]="message" type="text" placeholder="enter message">
+    <button (click)="sendMessage()">Send</button>
   </div>
   <div class="settings">
       <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>

@@ -34,11 +34,8 @@ export class ChatDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.username = localStorage.getItem("username");
-    if (this.username === "undefined"){
-      this.logout();
-    }
+    if (this.username === "undefined") this.logout();
     this.chatDisplay = false;
-
     this.userManager.getPermissions(this.username).subscribe(res=>{
       if (res["permissions"] == "group" || res["permissions"] == "super"){
         this.userHasPermission = true;
@@ -54,9 +51,9 @@ export class ChatDashboardComponent implements OnInit {
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
     })
-
-
-
+    this.socket.getMessages().subscribe(res=>{
+      console.log("Chat: " + res);
+    })
   }
 
   //Logout as a user
@@ -94,7 +91,7 @@ export class ChatDashboardComponent implements OnInit {
     this.inChannel = true;
   }
 
-  sendMessage(message:string){
-    this.socket.sendMessage(message);
+  sendMessage(){
+    this.socket.sendMessage(this.message);
   }
 }

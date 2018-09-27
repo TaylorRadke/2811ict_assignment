@@ -34,12 +34,10 @@ export class GroupSettingsComponent implements OnInit {
       this.groups = res["groups"];
       if (this.groups.length > 0) this.hasGroups = true;
       else this.hasGroups = false;
-      console.log(this.groups);
     });
 
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
-      console.log(res);
     });
   }
 
@@ -59,7 +57,6 @@ export class GroupSettingsComponent implements OnInit {
   //Create a group
   createGroup(){
     this.groupManager.createGroup(this.groupCreate).subscribe(res=>{
-      console.log(res);
       if (res["success"]){
         this.updateGroups();
       }
@@ -70,7 +67,6 @@ export class GroupSettingsComponent implements OnInit {
   //Delete a group
   deleteGroup(){
     this.groupManager.deleteGroup(this.groupDelete).subscribe(res=>{
-      console.log(res);
       if(res["success"]){
         this.updateGroups();
       }
@@ -80,7 +76,6 @@ export class GroupSettingsComponent implements OnInit {
   //Add user to a group
   addUser(){
     this.groupManager.addUser(this.userAdd,this.groupAddUser).subscribe(res=>{
-      console.log(res);
       if (res["success"]){
         this.updateGroups();
       }
@@ -90,7 +85,6 @@ export class GroupSettingsComponent implements OnInit {
   //Remove user from a group
   removeUser(){
     this.groupManager.removeUser(this.groups[this.groupUserRemove].group,this.userRemove).subscribe(res=>{
-      console.log(res);
       if (res["success"]){
         this.updateGroups();
       }
@@ -105,6 +99,5 @@ export class GroupSettingsComponent implements OnInit {
     }else{
       this.usersInGroup = false;
     }
-    console.log(this.groups[this.groupUserRemove].users, this.usersInGroup);
   }
 }

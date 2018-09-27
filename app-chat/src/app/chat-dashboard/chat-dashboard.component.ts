@@ -13,7 +13,7 @@ import {GroupManagerService} from '../api-services/group-manager.service';
 export class ChatDashboardComponent implements OnInit {
   username:string;
   messages=[];
-  message;
+  message:string;
   hasAdminPriviledges=true;
   users;
   groups;
@@ -56,6 +56,7 @@ export class ChatDashboardComponent implements OnInit {
     })
 
 
+
   }
 
   //Logout as a user
@@ -65,7 +66,6 @@ export class ChatDashboardComponent implements OnInit {
   }
 
   showSettings(selectedSetting:string){
-    console.log(selectedSetting);
     this.settingsSelect = selectedSetting;
   }
 
@@ -73,7 +73,6 @@ export class ChatDashboardComponent implements OnInit {
   displayChannels(groupDisplay:string){
     this.groupSelected = groupDisplay;
     this.channelManager.getChannels(groupDisplay).subscribe(res=>{
-      console.log(res);
       this.channels = res["channels"];
       this.channelsInGroup = [];
       for (let i = 0; i < this.channels.length; i++){
@@ -88,11 +87,14 @@ export class ChatDashboardComponent implements OnInit {
       this.channelUsers = res["users"];
       this.showUsers = true;
       this.chatDisplay = true;
-      console.log(res);
     });
   }
 
   joinChannel(channel:string){
     this.inChannel = true;
+  }
+
+  sendMessage(message:string){
+    this.socket.sendMessage(message);
   }
 }

@@ -11,7 +11,7 @@
       <button *ngIf="userHasPermission" (click)="showSettings('channel')">Channel Settings</button>
   </div>
   <div></div>
-  <div>
+  <div id="lists">
       <div id="userList">
           <table id="userTable">
             <tr>
@@ -21,7 +21,7 @@
             <br>
             <br>
             </tr>
-            <tr style="color:yellow" *ngFor="let user of users">{{user}}</tr><br>
+            <tr id="user" *ngFor="let user of users">{{user}}</tr><br>
           </table>
         </div>
         <div id="groupList">
@@ -46,10 +46,12 @@
           </table>
         </div>
   </div>
-  <div id="chat-box" *ngIf="inChannel">
-    <div style="width: 25em;height: 25em; background:grey"></div>
-    <input style="width:24.5em;" type="text" placeholder="enter message">
-    <button >Send</button>
+  <div id="chat-box" >
+    <div id="msg_box">
+      <div *ngFor='let msg of messages'>{{msg.text}}</div>
+    </div>
+    <input style="width:24.5em;" [value]="message" type="text" placeholder="enter message">
+    <button (click)="sendMessage(message)">Send</button>
   </div>
   <div class="settings">
       <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>

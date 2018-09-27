@@ -1,7 +1,6 @@
 module.exports = function(app,dbo){
     //Get the permissions of a user
     app.get("/api/:username/permissions",function(req,res){
-        console.log("Request for user permissions");
         var uname = req.params.username;
         var userExists = false;
         dbo.collection("users").findOne({"username":uname},function(err,result){
@@ -14,17 +13,18 @@ module.exports = function(app,dbo){
     app.post("/api/users/permissions",function(req,res){
         var userModifyPermissions = req.body.username;
         var newPermissions = req.body.permissions;
-
+        var updatedPermissions = false;
+        console.log(userModifyPermissions);
         dbo.collection("users").updateOne({"username":userModifyPermissions},{
             $set:{"permissions":newPermissions}
         },function(err,result){
             if (err) console.log(err);
-            if (result.result.nModified == 1){
-               res.send({"update":{"user":userModifyPermissions,"permissions":newPermissions},"success":true});
-            }else{
-                res.send({"update":{"user":userModifyPermissions,"permissions":newPermissions},"success":false});
+            else{
+                if (result.modifiedCount){
+                    updatedPermissions = true;
+                }
+                res.send({"user":userModifyPermissions,"permissions":newPermissions,"success":updatedPermissions});
             }
-            
         });   
     })
 

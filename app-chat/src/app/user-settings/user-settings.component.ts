@@ -16,7 +16,7 @@ export class UserSettingsComponent implements OnInit {
   hasAdminPermissions;
   users;
   newUsername;
-  newUserEmail;
+  newUserPassword;
   userDelete;
   superUser;
   username:string = localStorage.getItem("username");
@@ -31,7 +31,6 @@ export class UserSettingsComponent implements OnInit {
   ngOnInit() {
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
-      console.log(res);
 
       if (localStorage.getItem("username") === "undefined"){
         this.router.navigate(['/']);
@@ -39,7 +38,6 @@ export class UserSettingsComponent implements OnInit {
     });
 
     this.userManager.getPermissions(localStorage.getItem("username")).subscribe(data=>{
-      console.log(data);
       this.userPermissions = data["permissions"];
       if (this.userPermissions == "super"){
         this.userPermissions = ["super","group"];
@@ -55,7 +53,6 @@ export class UserSettingsComponent implements OnInit {
   changeUserPermissions(){
     this.userManager.modifyPermissions(localStorage.getItem("username"),
     this.userSelected,this.permissionSelected).subscribe(res=>{
-      console.log(res);
       if (res["success"]){
         this.userManager.getUsers().subscribe(res=>{
           this.users = res["users"];
@@ -66,8 +63,7 @@ export class UserSettingsComponent implements OnInit {
 
   //Create a new user
   createUser(){
-    this.userManager.createUser(this.newUsername,this.newUserEmail).subscribe(res=>{
-      console.log(res);
+    this.userManager.createUser(this.newUsername,this.newUserPassword).subscribe(res=>{
       if (res["success"]){
         this.userManager.getUsers().subscribe(res=>{
           this.users = res["users"];
@@ -80,7 +76,6 @@ export class UserSettingsComponent implements OnInit {
   deleteUser(){
     if(confirm("Are you sure you want to delete " + this.userDelete +"? They will be unable to login")){
       this.userManager.deleteUser(this.userDelete).subscribe(res=>{
-        console.log(res);
         if (this.userDelete == localStorage.getItem("username")){
           localStorage.clear();
           this.router.navigate[('')];

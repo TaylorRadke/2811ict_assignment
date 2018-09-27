@@ -16,18 +16,15 @@ MongoDB.connect(URL,function(err,db){
     if (err) throw err;
     dbo = db.db('Chat_app_db');
     console.log("Connected to db");
+
     require('./routes/users')(app,dbo);
     require("./routes/groups")(app,dbo);
     require('./routes/channels.js')(app,dbo);
+    require('./socket.js')(app,io);
+    require('./routes/index.js')(app,path);
 
     //Start server on port 3000;
     http.listen(3000,function(){
         console.log("Server listening on port 3000");
     });
 });
-
-
-// //Wild card route for if the user enters an invalid url for server, serves frontend
-// app.all('*',function(req,res){
-//     res.sendFile(path.join(__dirname,"../app-chat/dist/app-chat/index.html"));
-// })

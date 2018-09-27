@@ -18,8 +18,7 @@ export class UserManagerService {
 
   modifyPermissions(fromUser:string,username:string,newPermissions:string){
     return this.http.post('/api/users/permissions',{
-      "fromUser":fromUser,
-      "changeUser":username,
+      "username":username,
       "permissions":newPermissions
     });
   }

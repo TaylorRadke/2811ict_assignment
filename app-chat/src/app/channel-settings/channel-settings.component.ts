@@ -38,7 +38,6 @@ export class ChannelSettingsComponent implements OnInit {
     });
 
     this.userManager.getUsers().subscribe(res=>{
-      console.log(res);
       this.users = res["users"];
     })
   }
@@ -46,9 +45,7 @@ export class ChannelSettingsComponent implements OnInit {
   //Create a channel
   createChannel(){
     this.channelManager.createChannel(this.selectGroup,this.channelName)
-    .subscribe(res=>{
-      console.log(res);
-    })
+    .subscribe();
   }
 
   //Get all channels in a group
@@ -65,8 +62,7 @@ export class ChannelSettingsComponent implements OnInit {
   //delete a channel in a group
   deleteChannel(){
     this.channelManager.removeChannel(this.selectGroup,this.selectChannel).subscribe(res=>{
-      console.log(res);
-      if (res["channel-removed"]){
+      if (res["channel_deleted"]){
         this.getChannels();
       }
     })
@@ -77,7 +73,6 @@ export class ChannelSettingsComponent implements OnInit {
     console.log("getting channel users");
     this.channelManager.getChannelUsers(this.selectGroup,this.selectChannel).subscribe(res=>{
       this.channelUsers = res["users"];
-      console.log(this.channelUsers);
     })
   }
 
@@ -86,7 +81,6 @@ export class ChannelSettingsComponent implements OnInit {
     this.channelManager.addUser(this.selectUser,this.selectGroup,this.selectChannel).subscribe(res=>{
       if (res["user-added-to-channel"]){
         this.channelManager.getChannelUsers(this.selectGroup,this.selectChannel).subscribe(res=>{
-          console.log(res);
           this.channelUsers = res["users"];
         })
       }
@@ -98,8 +92,10 @@ export class ChannelSettingsComponent implements OnInit {
     this.channelManager.removeUser(this.selectUser,this.selectGroup,this.selectChannel).subscribe(res=>{
       if (res["user-deleted"]){
         this.channelManager.getChannelUsers(this.selectGroup,this.selectChannel).subscribe(res=>{
-          this.channelUsers = res["users"];
-          console.log(res);
+          if (res["user_removed"]){
+            this.channelUsers = res["users"];
+          }
+          
         });
       }
     })
@@ -109,7 +105,6 @@ export class ChannelSettingsComponent implements OnInit {
   getGroupUsers(){
     this.groupManager.getUsers(this.selectGroup).subscribe(res=>{
       this.groupUsers = res["users"];
-      console.log(res);
     });
   }
 

@@ -90,7 +90,7 @@ module.exports = function(app,dbo){
             {$pull:{"users":user}},function(err,result){
                 if (err) throw err;
                 else{
-                    res.send({"group":group,"channel":channel,"user":user,"user_deleted":Boolean(result.modifiedCount)});
+                    res.send({"group":group,"channel":channel,"user":user,"user_removed":Boolean(result.modifiedCount)});
                 }
         });
     })

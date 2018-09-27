@@ -13,7 +13,7 @@
   <div>
     Create user<br><br>
     <input type="text" [(ngModel)]="newUsername" placeholder="username"><br><br>
-    <input type='email' [(ngModel)]="newUserEmail" placeholder="email">&nbsp;&nbsp;
+    <input type='text' [(ngModel)]="newUserPassword" placeholder="password">&nbsp;&nbsp;
     <button *ngIf="newUsername && newUserEmail" (click)="createUser()">Confirm</button>
   </div>
   <div *ngIf="superUser">

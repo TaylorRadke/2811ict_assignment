@@ -24,11 +24,11 @@ div.header{
 }
 
 #channelButton {
-    color: rgb(218, 7, 218);
+    color: rgb(255, 0, 221);
 }
 
 #groupButton {
-    color:white;
+    color:rgb(30, 255, 0);
 }
 #user{
     color: gold;
@@ -38,4 +38,8 @@ div.header{
     height: 25em; 
     background:grey;
     overflow: auto;
+}
+
+th {
+    color:white;
 }

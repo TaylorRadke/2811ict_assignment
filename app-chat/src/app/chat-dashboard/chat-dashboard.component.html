@@ -46,7 +46,8 @@
           </table>
         </div>
   </div>
-  <div id="chat-box" >
+  <div id="chat-box" *ngIf="inChannel">
+    <h4 style="color:white">{{inChannel}}</h4>
     <div id="msg_box">
       <div *ngFor='let msg of messages'>{{msg.text}}</div>
     </div>

@@ -12,19 +12,17 @@ import {GroupManagerService} from '../api-services/group-manager.service';
 })
 export class ChatDashboardComponent implements OnInit {
   username:string;
-  messages=[];
+  messages=["hello"];
   message:string;
-  hasAdminPriviledges=true;
   users;
   groups;
   settingsSelect;
   userHasPermission;
-  channelsInGroup;
   channels;
   channelUsers;
-  showUsers = false;
+  showUsers;
   chatDisplay;
-  inChannel = false;
+  inChannel;
   group;
 
   constructor(private socket:SocketService, private router:Router,
@@ -32,6 +30,7 @@ export class ChatDashboardComponent implements OnInit {
     private groupManager:GroupManagerService) { }
 
   ngOnInit() {
+    
     this.username = localStorage.getItem("username");
     if (this.username === "undefined") this.logout();
     this.chatDisplay = false;
@@ -40,29 +39,30 @@ export class ChatDashboardComponent implements OnInit {
         this.userHasPermission = true;
       }
     });
-
-    this.channelManager.userIsIn(localStorage.getItem("username")).subscribe(res=>{
-      this.groups = res["groups"];
-    });
+    this.getUserGroups();
 
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
-    })
-    this.socket.getMessages().subscribe(res=>{
-      console.log("Chat: " + res);
-    })
+    });
   }
 
   //Logout as a user
   logout(){
     localStorage.clear();
+    this.socket.disconnect();
     this.router.navigateByUrl('');
   }
 
+  
   showSettings(selectedSetting:string){
     this.settingsSelect = selectedSetting;
   }
 
+  getUserGroups(){
+    this.channelManager.userIsIn(localStorage.getItem("username")).subscribe(res=>{
+      this.groups = res["groups"];
+    });
+  }
   //Display Channels for a group
   displayChannels(group:string){
     this.group = group;
@@ -80,11 +80,12 @@ export class ChatDashboardComponent implements OnInit {
     });
   }
 
-  joinChannel(){
-    this.inChannel = true;
+  joinChannel(channel:string){
+    this.inChannel = channel;
+    this.socket.joinRoom(this.group,channel,this.username);
   }
 
   sendMessage(){
-    this.socket.sendMessage(this.message);
+    this.socket.sendMessage(this.message,this.username);;
   }
 }

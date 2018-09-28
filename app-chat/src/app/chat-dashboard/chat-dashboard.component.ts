@@ -82,6 +82,9 @@ export class ChatDashboardComponent implements OnInit {
 
   joinChannel(channel:string){
     this.inChannel = channel;
+    if (this.socket.userInRoom()){
+      this.socket.leaveRoom();
+    }
     this.socket.joinRoom(this.group,channel,this.username);
   }
 

@@ -44,7 +44,8 @@ module.exports = function(app,dbo){
                     dbo.collection("channels").insertOne({
                         "group_name":group,
                         "channel_name":channel,
-                        "users":[]
+                        "users":[],
+                        "messages":[]
                     })
                     createdChannel = true;
                 }

@@ -9,13 +9,16 @@ export class SocketService {
   private url = 'http://localhost:3000/';
   private socket;
   private room;
-
+  
   constructor() {}
 
    sendMessage(message:string,username:string){
      this.socket.emit('add-message',{"text":message,"user":username});
    }
 
+   userInRoom(){
+     return Boolean(this.room)
+   }
    disconnect(){
      this.socket.disconnect();
    }
@@ -35,10 +38,10 @@ export class SocketService {
     joinRoom(group:string,channel:string,user:string){
       this.room = group+ "_" + channel;
       this.socket = io(this.url);
-      this.socket.emit('join',{"room":this.room,"user":user});
+      this.socket.emit('join',{"channel":channel,"group":group,"user":user});
     }
 
     leaveRoom(){
-      this.socket.to(this.room).emit('leave');
+      this.socket.emit('leave');
     }
 }

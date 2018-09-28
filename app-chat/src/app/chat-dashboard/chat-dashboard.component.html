@@ -1,7 +1,7 @@
 <div class="container">
   <div></div>
   <div id="header">
-      <h2>Welcome, {{username}}</h2>
+      <h2 style="color:white">Welcome, {{username}}</h2>
       <button (click)="logout()">Logout</button>
       &nbsp;
       <button *ngIf="userHasPermission" (click)="showSettings('user')">User Settings</button>
@@ -29,8 +29,8 @@
               <tr>
                 <th>Groups</th>
               </tr>
-              <tr *ngFor="let group of groups;let i = index">
-                <button class="link" id="groupButton" (click)="displayChannels(groups[i].group)">{{groups[i].group}}</button>
+              <tr *ngFor="let group of groups">
+                <button class="link" id="groupButton" (click)="displayChannels(group)">{{group}}</button>
               </tr>
             </table>
           </div>
@@ -41,7 +41,7 @@
               <th>Channels</th>
             </tr>
             <tr *ngFor="let channel of channels">
-              <button id="channelButton" class="link" (click)="joinChannel(channel.channel)">{{channel.channel}}</button>
+              <button id="channelButton" class="link" (click)="joinChannel(channel)">{{channel}}</button>
             </tr>
           </table>
         </div>

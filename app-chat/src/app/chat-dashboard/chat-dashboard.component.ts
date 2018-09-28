@@ -19,14 +19,13 @@ export class ChatDashboardComponent implements OnInit {
   groups;
   settingsSelect;
   userHasPermission;
-  groupsUserIsIn;
   channelsInGroup;
   channels;
   channelUsers;
-  groupSelected;
   showUsers = false;
   chatDisplay;
   inChannel = false;
+  group;
 
   constructor(private socket:SocketService, private router:Router,
     private userManager:UserManagerService, private channelManager:ChannelManagerService,
@@ -39,8 +38,6 @@ export class ChatDashboardComponent implements OnInit {
     this.userManager.getPermissions(this.username).subscribe(res=>{
       if (res["permissions"] == "group" || res["permissions"] == "super"){
         this.userHasPermission = true;
-      }else{
-        this.userHasPermission = false;
       }
     });
 
@@ -67,27 +64,23 @@ export class ChatDashboardComponent implements OnInit {
   }
 
   //Display Channels for a group
-  displayChannels(groupDisplay:string){
-    this.groupSelected = groupDisplay;
-    this.channelManager.getChannels(groupDisplay).subscribe(res=>{
+  displayChannels(group:string){
+    this.group = group;
+    this.channelManager.getChannels(group).subscribe(res=>{
       this.channels = res["channels"];
-      this.channelsInGroup = [];
-      for (let i = 0; i < this.channels.length; i++){
-        this.channelsInGroup.push(this.channels[i].channel);
-      }
     });
   }
 
   //Show users in a channel in a group
   showUsersInChannel(channel:string){
-    this.channelManager.getChannelUsers(this.groupSelected,channel).subscribe(res=>{
+    this.channelManager.getChannelUsers(this.group,channel).subscribe(res=>{
       this.channelUsers = res["users"];
       this.showUsers = true;
       this.chatDisplay = true;
     });
   }
 
-  joinChannel(channel:string){
+  joinChannel(){
     this.inChannel = true;
   }
 

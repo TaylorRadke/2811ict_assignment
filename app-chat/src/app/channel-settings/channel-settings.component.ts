@@ -41,7 +41,6 @@ export class ChannelSettingsComponent implements OnInit {
 
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
-      console.log(res);
     })
   }
 
@@ -54,11 +53,7 @@ export class ChannelSettingsComponent implements OnInit {
   //Get all channels in a group
   getChannels(){
     this.channelManager.getChannels(this.selectGroup).subscribe(res=>{
-      this.channels = [];
-      var channel = res['channels'];
-      for (let i = 0; i < channel.length; i++){
-        this.channels.push(channel[i].channel);
-      }
+      this.channels = res["channels"];
     })
   }
 

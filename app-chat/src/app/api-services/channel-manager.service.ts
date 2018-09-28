@@ -22,7 +22,6 @@ export class ChannelManagerService {
       "channel":channel
     });
   }
-
   addUser(username:string,group:string,channel:string){
     return this.http.post('/api/groups/channels/users',{
       "username":username,

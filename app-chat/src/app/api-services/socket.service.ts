@@ -16,23 +16,16 @@ export class SocketService {
      this.socket.emit('add-message',{"text":message,"user":username});
    }
 
-   userInRoom(){
-     return Boolean(this.room)
-   }
-   disconnect(){
-     this.socket.disconnect();
-   }
+   userInRoom(){return Boolean(this.room)}
+
+   disconnect(){this.socket.disconnect();}
 
    getMessages(){
-     let observable = new Observable(observer=>{
-       this.socket.on("message",(data)=>{
+     return new Observable(observer=>{
+       this.socket.on("messages",function(data){
          observer.next(data);
        })
-       return ()=>{
-         this.socket.disconnect();
-       }
      })
-     return observable;
     }
 
     joinRoom(group:string,channel:string,user:string){
@@ -40,8 +33,6 @@ export class SocketService {
       this.socket = io(this.url);
       this.socket.emit('join',{"channel":channel,"group":group,"user":user});
     }
-
-    leaveRoom(){
-      this.socket.emit('leave');
-    }
+    
+    leaveRoom(){this.socket.emit('leave');}
 }

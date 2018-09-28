@@ -33,11 +33,10 @@ div.header{
 #user{
     color: gold;
 }
-#msgbox{
-    width: 25em;
-    height: 25em; 
-    background:grey;
+#chat-box {
+    height: 300px;
     overflow: auto;
+    background-color:rgb(46, 45, 45); 
 }
 
 th {

@@ -46,13 +46,15 @@
           </table>
         </div>
   </div>
-  <div id="chat-box" *ngIf="inChannel">
+  <div>
     <h4 style="color:white">{{inChannel}}</h4>
-    <div id="msg_box">
-      <div *ngFor='let msg of messages'>{{msg.text}}</div>
+    <div id="chat-box" *ngIf="inChannel">
+      <div id="msg_box">
+        <div style="color:white"  *ngFor='let msg of messages'>[{{msg.user}}] {{msg.text}}</div>
+      </div>
     </div>
-    <input style="width:24.5em;" [(ngModel)]="message" type="text" placeholder="enter message">
-    <button (click)="sendMessage()">Send</button>
+    <input style="width:90%" [(ngModel)]="message" type="text" placeholder="enter message">
+    <button style="width: 9%" (click)="sendMessage()">Send</button>
   </div>
   <div class="settings">
       <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>

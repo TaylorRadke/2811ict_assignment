@@ -47,17 +47,17 @@
         </div>
   </div>
   <div *ngIf="inChannel">
-    <h4 style="color:white">{{inChannel}}</h4>
+    <h4 style="color:orange;font-size: 22px;">{{inChannel}}</h4>
     <div id="chat-box">
       <div id="msg_box">
         <div id="usermsg"  *ngFor='let msg of messages'>
-          <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>{{msg.user}}</p> {{msg.text}}</div>
-          <div *ngIf="msg.type =='announcement'"><br>{{msg.text}}</div>
+          <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
+          <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
         </div>
       </div>
     </div>
-    <input style="width:90%" [(ngModel)]="message" type="text" placeholder="enter message">
-    <button style="width: 9%" (click)="sendMessage()">Send</button>
+    <input style="width:645px" [(ngModel)]="message" type="text" placeholder="enter message">
+    <button style="width: 50px" (click)="sendMessage()">Send</button>
   </div>
   <div class="settings">
       <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>

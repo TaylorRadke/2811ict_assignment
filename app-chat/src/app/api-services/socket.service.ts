@@ -16,7 +16,7 @@ export class SocketService {
      this.socket.emit('message',{"text":message,"user":username,"type":"message"});
    }
 
-   userInRoom(){return Boolean(this.room)}
+   userInRoom(){return this.room}
 
    disconnect(){this.socket.disconnect();}
 
@@ -24,12 +24,12 @@ export class SocketService {
      return new Observable(observer=>{
        this.socket.on("messages",function(data){
          observer.next(data);
-       })
-     })
+       },()=>{this.socket.emit("")})
+      })
     }
 
     joinRoom(group:string,channel:string,user:string){
-      this.room = group+ "_" + channel;
+      this.room = group + "_" + channel;
       this.socket = io(this.url);
       this.socket.emit('join',{"channel":channel,"group":group,"user":user});
     }
@@ -38,7 +38,7 @@ export class SocketService {
 
     newMessage(){
       return new Observable(observer=>{
-        this.socket.on("newMessage",function(data){
+        this.socket.on("message",function(data){
           observer.next(data);
         })
       })

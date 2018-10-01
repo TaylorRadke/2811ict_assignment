@@ -38,6 +38,7 @@ div.header{
     width: 700px;
     overflow: auto;
     background-color:rgb(46, 45, 45); 
+    border: 2px solid rgb(92, 92, 92);
 }
 
 th {
@@ -49,4 +50,5 @@ th {
     width: 650px;
     word-wrap:break-word;
     font-size: 12px;
+   
 }

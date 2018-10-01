@@ -9,7 +9,11 @@ module.exports = function(app,io,dbo){
         function getMessages(){
             dbo.collection("channels").findOne({$and:[{"group_name":group},{"channel_name":channel}]},function(err,data){
                 if (err) throw err;
-                else io.to(group+"_"+channel).emit("messages",{"messages":data.messages});
+               
+                else {
+                    io.to(roomChannel).emit("messages",{"messages":data.messages});
+                    io.to(roomChannel).emit("message",{"message":{"text":user+" joined the channel.","type":"announcement"}});
+                }
             }) 
         }
     
@@ -19,11 +23,6 @@ module.exports = function(app,io,dbo){
                 $push:{"messages":message}
             })
         }
-
-        socket.in(roomChannel).on("add-message",function(message){
-            addMessage(message);
-            getMessages();
-        });
         
         socket.on('join',function(room){
             channel = room.channel;
@@ -32,18 +31,17 @@ module.exports = function(app,io,dbo){
             user = room.user;
 
             socket.join(roomChannel);
-            addMessage({"text":user + " joined the channel.","type":"announcement"});
-            getMessages()
+            getMessages();
         });
 
         socket.on('leave',function(){
-            addMessage({"text":user + " left the channel"});
+            io.to(roomChannel).emit("message",{"message":{"text":user + " left the channel","type":"announcement"}});
             socket.leave(roomChannel);
         });
 
         socket.on("message",function(message){
             addMessage(message);
-            io.to(roomChannel).emit("newMessage",{"message":message});
+            io.to(roomChannel).emit("message",{"message":message});
         })
     });
 

@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/chat-dashboard']);
       }else{
         this.loginFail = true;
+        sessionStorage.clear();
       }
     });
   }

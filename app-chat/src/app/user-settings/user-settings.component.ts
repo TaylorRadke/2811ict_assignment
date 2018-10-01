@@ -37,7 +37,7 @@ export class UserSettingsComponent implements OnInit {
       }
     });
 
-    this.userManager.getPermissions(localStorage.getItem("username")).subscribe(data=>{
+    this.userManager.getPermissions(sessionStorage.getItem("username")).subscribe(data=>{
       this.userPermissions = data["permissions"];
       if (this.userPermissions == "super"){
         this.userPermissions = ["super","group"];
@@ -51,7 +51,7 @@ export class UserSettingsComponent implements OnInit {
 
   //Change a users permissions
   changeUserPermissions(){
-    this.userManager.modifyPermissions(localStorage.getItem("username"),
+    this.userManager.modifyPermissions(sessionStorage.getItem("username"),
     this.userSelected,this.permissionSelected).subscribe(res=>{
       if (res["success"]){
         this.userManager.getUsers().subscribe(res=>{
@@ -76,8 +76,8 @@ export class UserSettingsComponent implements OnInit {
   deleteUser(){
     if(confirm("Are you sure you want to delete " + this.userDelete +"? They will be unable to login")){
       this.userManager.deleteUser(this.userDelete).subscribe(res=>{
-        if (this.userDelete == localStorage.getItem("username")){
-          localStorage.clear();
+        if (this.userDelete == sessionStorage.getItem("username")){
+          sessionStorage.clear();
           this.router.navigate[('')];
         }
         this.userManager.getUsers().subscribe(res=>{

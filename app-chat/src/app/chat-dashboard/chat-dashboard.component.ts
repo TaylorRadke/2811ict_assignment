@@ -50,7 +50,6 @@ export class ChatDashboardComponent implements OnInit {
   logout(){
     this.socket.leaveRoom();
     sessionStorage.clear();
-    this.socket.disconnect();
     this.router.navigateByUrl('');
   }
 

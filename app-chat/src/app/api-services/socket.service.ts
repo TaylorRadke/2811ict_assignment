@@ -18,8 +18,6 @@ export class SocketService {
 
    userInRoom(){return this.room}
 
-   disconnect(){this.socket.disconnect();}
-
    getMessages(){
      return new Observable(observer=>{
        this.socket.on("messages",function(data){

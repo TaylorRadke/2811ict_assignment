@@ -5,7 +5,7 @@ module.exports = function(app,io,dbo){
         var group;
         var user;
         var roomChannel;
-
+        
         function getMessages(){
             dbo.collection("channels").findOne({$and:[{"group_name":group},{"channel_name":channel}]},function(err,data){
                 if (err) throw err;
@@ -23,7 +23,7 @@ module.exports = function(app,io,dbo){
                 $push:{"messages":message}
             })
         }
-        
+
         socket.on('join',function(room){
             channel = room.channel;
             group = room.group;
@@ -40,6 +40,7 @@ module.exports = function(app,io,dbo){
         });
 
         socket.on("message",function(message){
+            console.log(message);
             addMessage(message);
             io.to(roomChannel).emit("message",{"message":message});
         })

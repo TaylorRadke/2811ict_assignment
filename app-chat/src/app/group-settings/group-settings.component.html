@@ -18,11 +18,11 @@
       <p *ngIf="!hasGroups">There are no groups to display<br><br></p>
       <div *ngIf="hasGroups" class="settings">
         <p>Group:</p>&nbsp;
-        <select  [(ngModel)]="groupAddUser">
+        <select  [(ngModel)]="groupAddUser" (select)="getUsers()">
           <option *ngFor="let group of groups" [value]="group">{{group}}</option>
         </select><br><br>
         <p>User:</p>&nbsp;
-        <select [(ngModel)]="userAdd">
+        <select *ngIf="groupAddUser" [(ngModel)]="userAdd">
           <option *ngFor="let user of users" [value]="user">{{user}}</option>
         </select>&nbsp;&nbsp;
         <button *ngIf="groupAddUser && userAdd" (click)="addUser()">Confirm</button>

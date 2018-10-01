@@ -40,7 +40,7 @@ export class ChatDashboardComponent implements OnInit {
     this.socket.listenUpdate().subscribe(()=>{
         this.getUserGroups();
         if(this.group) this.displayChannels(this.group);
-        this.showUsersInChannel(this.inChannel);
+        if (this.inChannel){this.showUsersInChannel(this.inChannel);}
     });
   }
   //Logout as a user

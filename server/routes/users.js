@@ -36,7 +36,7 @@ module.exports = function(app,dbo,formidable){
             if (err) console.log(err);
             else{
                 if (result == null){
-                    dbo.collection("users").insertOne({"username":uname,"password":password},function(err,result){
+                    dbo.collection("users").insertOne({"username":uname,"password":password,"avatar":"generic-avatar.png"},function(err,result){
                         if (err) console.log(err);
                         else res.send({"success":true});
                     });
@@ -54,7 +54,7 @@ module.exports = function(app,dbo,formidable){
             if (err) console.log(err);
             var users = [];
             result.forEach(function(element){
-                users.push({"username":element.username,"image":element.user_img});
+                users.push({"username":element.username,"image":element.avatar});
             });
             res.send({"users":users});
         })
@@ -126,7 +126,7 @@ module.exports = function(app,dbo,formidable){
         var img_name = req.body.image;
 
         dbo.collection("users").updateOne({"username":username},{
-            $set:{"user_img":img_name}
+            $set:{"avatar":img_name}
         },function(err){
             if (err) throw err;
             res.send({"set-image":true});

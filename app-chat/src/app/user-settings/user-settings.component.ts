@@ -37,10 +37,8 @@ export class UserSettingsComponent implements OnInit {
     private imgService:ImageuploadService) { }
 
   ngOnInit() {
-    this.userManager.getUsers().subscribe(res=>{
-      this.users = res["users"];
-      this.username = sessionStorage.getItem("username");
-    });
+    this.username = sessionStorage.getItem("username");
+    this.getUsers();
 
     this.userManager.getPermissions(sessionStorage.getItem("username")).subscribe(data=>{
       this.userPermissions = data["permissions"];
@@ -48,7 +46,6 @@ export class UserSettingsComponent implements OnInit {
         this.userPermissions = ["super","group"];
         this.superUser = true;
       }else{
-        this.superUser = false;
         this.userPermissions = [data["permissions"]];
       }
     });
@@ -59,9 +56,7 @@ export class UserSettingsComponent implements OnInit {
     this.userManager.modifyPermissions(sessionStorage.getItem("username"),
     this.userSelected,this.permissionSelected).subscribe(res=>{
       if (res["success"]){
-        this.userManager.getUsers().subscribe(res=>{
-          this.users = res["users"];
-        })
+        this.getUsers();
       }
     });
   }
@@ -70,14 +65,19 @@ export class UserSettingsComponent implements OnInit {
   createUser(){
     this.userManager.createUser(this.newUsername,this.newUserPassword).subscribe(res=>{
       if (res["success"]){
-        this.userManager.getUsers().subscribe(res=>{
-          this.users = res["users"];
-          this.socket.update();
-        })
+        this.getUsers();
       }
     });
   }
 
+  getUsers(){
+    this.userManager.getUsers().subscribe(res=>{
+      this.users = [];
+      res["users"].forEach(user=>{
+        this.users.push(user.username);
+      })
+    });
+  }
   //Delete a user
   deleteUser(){
     if(confirm("Are you sure you want to delete " + this.userDelete +"? They will be unable to login")){
@@ -86,9 +86,7 @@ export class UserSettingsComponent implements OnInit {
           sessionStorage.clear();
           this.router.navigate[('')];
         }
-        this.userManager.getUsers().subscribe(res=>{
-          this.users = res["users"];
-        })
+        this.getUsers();
         this.socket.update();
       })
     };
@@ -104,7 +102,9 @@ export class UserSettingsComponent implements OnInit {
     this.imgService.imgUpload(fd).subscribe(res=>{
       this.imagePath = res["data"].filename;
       if (res["result"] == "ok"){
-        this.imgService.imgUploadDB(this.imagePath).subscribe();
+        this.imgService.imgUploadDB(this.imagePath).subscribe(()=>{
+          this.socket.update();
+        });
       }
     })
   }

@@ -31,10 +31,7 @@ export class GroupSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.updateGroups();
-
-    this.userManager.getUsers().subscribe(res=>{
-      this.users = res["users"];
-    });
+    this.getUsers();
   }
 
   //Update all groups that have changed
@@ -53,6 +50,14 @@ export class GroupSettingsComponent implements OnInit {
     })
   }
 
+  getUsers(){
+    this.userManager.getUsers().subscribe(res=>{
+      this.users =[];
+      res["users"].forEach(user=>{
+        this.users.push(user.username);
+      });
+    });
+  }
   //Create a group
   createGroup(){
     this.groupManager.createGroup(this.groupCreate).subscribe(res=>{

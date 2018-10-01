@@ -26,7 +26,7 @@ MongoDB.connect(URL,function(err,db){
     require('./routes/channels.js')(app,dbo);
     require('./socket.js')(app,io,dbo);
     require('./routes/index.js')(app,path);
-
+    
     http.listen(3000,function(){
         console.log("Server listening on port 3000");
     });

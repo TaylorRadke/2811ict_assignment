@@ -29,11 +29,12 @@
         <div  id="chat-box">
           <div id="msg_box">
             <div id="usermsg"  *ngFor='let msg of messages'>
-              <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold">&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
+              <div *ngIf="msg.type == 'message'" style="color:rgb(182, 175, 175)"><p style="font-size: 10px;color:gold">&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
               <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
               <div *ngIf="msg.type == 'image'">
-                <p style="font-size: 10px;color:gold">&nbsp;&nbsp;{{msg.user}}</p>
-                <img style="width: 100px;height: 100px;" src="images/{{msg.image}}">
+                <!-- <img style="width: 15px;height: 15px;" src="images/{{}}"> -->
+                <p style="font-size: 11px;color:gold">&nbsp;&nbsp;{{msg.user}}</p>
+                <img style="max-width: 500px;max-height: 500px;" src="images/{{msg.image}}">
               </div>
             </div>
           </div>
@@ -48,8 +49,7 @@
   <div id="channelUserList" class="list">
     <table style="border: none;background-color: none;">
       <tr *ngFor="let user of channelUsers">
-        <td><img style="width: 20px;height: 20px;" *ngIf="user.image" src="images/{{user.image}}">
-        <img style="width: 20px;height: 20px;" *ngIf="!user.image" src="https://utulsa.edu/wp-content/uploads/2018/08/generic-avatar-300x300.jpg"></td>
+        <td><img style="width: 20px;height: 20px;" src="images/{{user.image}}"></td>
         <td style="color:white;">{{user.username}}</td>
       </tr>
     </table>

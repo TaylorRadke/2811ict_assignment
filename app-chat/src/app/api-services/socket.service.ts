@@ -6,28 +6,50 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class SocketService {
-  private url = 'http://localhost:3000';
-  private socket = io(this.url);
-
+  private socket = io('http://localhost:3000/');
+  private room;
+  
   constructor() {}
 
-   sendMessage(message){
-     console.log(message);
-     this.socket.emit('add-message',message);
+   sendMessage(message:string,username:string){
+     this.socket.emit('message',{"text":message,"user":username,"type":"message"});
    }
 
-   getMessages(){
-     this.socket = io(this.url);
+   userInRoom(){return this.room}
 
-     let observable = new Observable(observer=>{
-       this.socket.on("message",(data)=>{
-         console.log(data);
+   getMessages(){
+     return new Observable(observer=>{
+       this.socket.on("messages",function(data){
          observer.next(data);
-       })
-       return ()=>{
-         this.socket.disconnect();
-       }
-     })
-     return observable;
+       },()=>{this.socket.emit("")})
+      })
+    }
+
+    joinRoom(group:string,channel:string,user:string){
+      this.room = group + "_" + channel;
+      this.socket.emit('join',{"channel":channel,"group":group,"user":user});
+    }
+    
+    leaveRoom(){this.socket.emit('leave');}
+
+    newMessage(){
+      return new Observable(observer=>{
+        this.socket.on("message",function(data){
+          observer.next(data);
+        })
+      })
+    }
+
+    update(){
+      this.socket.emit("new_update");
+    }
+
+    listenUpdate(){
+      return new Observable(observer=>{
+        this.socket.on("updated",function(){
+          observer.next();
+        });
+
+      })
     }
 }

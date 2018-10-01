@@ -1,10 +1,10 @@
 <div class="container">
   <div></div>
   <div id="header">
-      <h2>Welcome, {{username}}</h2>
+      <h2 style="color:white">Welcome, {{username}}</h2>
       <button (click)="logout()">Logout</button>
       &nbsp;
-      <button *ngIf="userHasPermission" (click)="showSettings('user')">User Settings</button>
+      <button (click)="showSettings('user')">User Settings</button>
       &nbsp;  
       <button *ngIf="userHasPermission" (click)="showSettings('group')">Group Settings</button>
       &nbsp;
@@ -29,8 +29,8 @@
               <tr>
                 <th>Groups</th>
               </tr>
-              <tr *ngFor="let group of groups;let i = index">
-                <button class="link" id="groupButton" (click)="displayChannels(groups[i].group)">{{groups[i].group}}</button>
+              <tr *ngFor="let group of groups">
+                <button class="link" id="groupButton" (click)="displayChannels(group)">{{group}}</button>
               </tr>
             </table>
           </div>
@@ -41,17 +41,23 @@
               <th>Channels</th>
             </tr>
             <tr *ngFor="let channel of channels">
-              <button id="channelButton" class="link" (click)="joinChannel(channel.channel)">{{channel.channel}}</button>
+              <button id="channelButton" class="link" (click)="joinChannel(channel)">{{channel}}</button>
             </tr>
           </table>
         </div>
   </div>
-  <div id="chat-box" >
-    <div id="msg_box">
-      <div *ngFor='let msg of messages'>{{msg.text}}</div>
+  <div *ngIf="inChannel">
+    <h4 style="color:orange;font-size: 22px;">{{inChannel}}</h4>
+    <div id="chat-box">
+      <div id="msg_box">
+        <div id="usermsg"  *ngFor='let msg of messages'>
+          <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
+          <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
+        </div>
+      </div>
     </div>
-    <input style="width:24.5em;" [(ngModel)]="message" type="text" placeholder="enter message">
-    <button (click)="sendMessage()">Send</button>
+    <input style="width:645px" [(ngModel)]="message" type="text" placeholder="enter message">
+    <button style="width: 50px" (click)="sendMessage()">Send</button>
   </div>
   <div class="settings">
       <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>

@@ -12,75 +12,71 @@ import {GroupManagerService} from '../api-services/group-manager.service';
 })
 export class ChatDashboardComponent implements OnInit {
   username:string;
-  messages=[];
+  messages;
   message:string;
-  hasAdminPriviledges=true;
   users;
   groups;
   settingsSelect;
   userHasPermission;
-  groupsUserIsIn;
-  channelsInGroup;
   channels;
   channelUsers;
-  groupSelected;
-  showUsers = false;
+  showUsers;
   chatDisplay;
-  inChannel = false;
+  inChannel;
+  group;
 
   constructor(private socket:SocketService, private router:Router,
     private userManager:UserManagerService, private channelManager:ChannelManagerService,
     private groupManager:GroupManagerService) { }
 
   ngOnInit() {
-    this.username = localStorage.getItem("username");
+    
+    this.username = sessionStorage.getItem("username");
     if (this.username === "undefined") this.logout();
     this.chatDisplay = false;
+
     this.userManager.getPermissions(this.username).subscribe(res=>{
-      if (res["permissions"] == "group" || res["permissions"] == "super"){
-        this.userHasPermission = true;
-      }else{
-        this.userHasPermission = false;
-      }
+      if (res["permissions"] == "group" || res["permissions"] == "super") this.userHasPermission = true;
     });
 
-    this.channelManager.userIsIn(localStorage.getItem("username")).subscribe(res=>{
-      this.groups = res["groups"];
+    this.getUserGroups();
+    this.getUsers();
+    this.socket.listenUpdate().subscribe(()=>{
+        this.getUserGroups();
+        this.getUsers();
+        this.getUserGroups();
+        if(this.group) this.displayChannels(this.group);
     });
-
-    this.userManager.getUsers().subscribe(res=>{
-      this.users = res["users"];
-    })
-    this.socket.getMessages().subscribe(res=>{
-      console.log("Chat: " + res);
-    })
   }
 
   //Logout as a user
   logout(){
-    localStorage.clear();
+    this.socket.leaveRoom();
+    sessionStorage.clear();
     this.router.navigateByUrl('');
   }
 
+  
   showSettings(selectedSetting:string){
     this.settingsSelect = selectedSetting;
   }
 
+  getUserGroups(){
+    this.channelManager.userIsIn(this.username).subscribe(res=>{
+      this.groups = res["groups"];
+    });
+  }
   //Display Channels for a group
-  displayChannels(groupDisplay:string){
-    this.groupSelected = groupDisplay;
-    this.channelManager.getChannels(groupDisplay).subscribe(res=>{
+  displayChannels(group:string){
+    this.group = group;
+    this.channelManager.getChannels(group).subscribe(res=>{
       this.channels = res["channels"];
-      this.channelsInGroup = [];
-      for (let i = 0; i < this.channels.length; i++){
-        this.channelsInGroup.push(this.channels[i].channel);
-      }
     });
   }
 
   //Show users in a channel in a group
   showUsersInChannel(channel:string){
-    this.channelManager.getChannelUsers(this.groupSelected,channel).subscribe(res=>{
+    this.channelManager.getChannelUsers(this.group,channel).subscribe(res=>{
       this.channelUsers = res["users"];
       this.showUsers = true;
       this.chatDisplay = true;
@@ -88,10 +84,31 @@ export class ChatDashboardComponent implements OnInit {
   }
 
   joinChannel(channel:string){
-    this.inChannel = true;
+    this.inChannel = channel;
+    if (this.socket.userInRoom()){this.socket.leaveRoom();}
+    this.socket.joinRoom(this.group,channel,this.username);
+
+    this.socket.getMessages().subscribe(res=>{
+      this.messages=res["messages"];
+    });
+
+    this.socket.newMessage().subscribe(res=>{
+      this.messages.push(res["message"]);
+    });
+
+
+  }
+
+  getUsers(){
+    this.userManager.getUsers().subscribe(res=>{
+      this.users = res["users"];
+    });
   }
 
   sendMessage(){
-    this.socket.sendMessage(this.message);
+    if (this.message != ''){
+      this.socket.sendMessage(this.message,this.username);
+      this.message = '';
+    }
   }
 }

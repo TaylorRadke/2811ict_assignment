@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {GroupManagerService} from '../api-services/group-manager.service';
 import {UserManagerService} from '../api-services/user-manager.service';
-import { consumeBinding } from '@angular/core/src/render3/instructions';
+import { SocketService } from '../api-services/socket.service';
 
 @Component({
   selector: 'app-group-settings',
@@ -27,7 +27,7 @@ export class GroupSettingsComponent implements OnInit {
   addUsername;
   groupSelected;
 
-  constructor(private groupManager:GroupManagerService, private userManager:UserManagerService) { }
+  constructor(private groupManager:GroupManagerService, private userManager:UserManagerService,private socket:SocketService) { }
 
   ngOnInit() {
     this.updateGroups();
@@ -43,8 +43,9 @@ export class GroupSettingsComponent implements OnInit {
       this.groups = [];
       res["groups"].forEach(element=>{
         this.groups.push(element.group_name);
-        this.hasGroups = true;
+        
       })
+      this.hasGroups = true;
     });
 
     this.userManager.getUsers().subscribe(res=>{
@@ -57,6 +58,7 @@ export class GroupSettingsComponent implements OnInit {
     this.groupManager.createGroup(this.groupCreate).subscribe(res=>{
       if (res["success"]){
         this.updateGroups();
+        this.socket.update();
       }
     });
     
@@ -67,6 +69,7 @@ export class GroupSettingsComponent implements OnInit {
     this.groupManager.deleteGroup(this.groupDelete).subscribe(res=>{
       if(res["success"]){
         this.updateGroups();
+        this.socket.update();
       }
     });
   }
@@ -76,6 +79,7 @@ export class GroupSettingsComponent implements OnInit {
     this.groupManager.addUser(this.userAdd,this.groupAddUser).subscribe(res=>{
       if (res["success"]){
         this.updateGroups();
+        this.socket.update();
       }
     });  
   }
@@ -85,6 +89,7 @@ export class GroupSettingsComponent implements OnInit {
     this.groupManager.removeUser(this.groupSelected,this.userSelected).subscribe(res=>{
       if (res["success"]){
         this.updateGroups();
+        this.socket.update();
       }
     });
   } 

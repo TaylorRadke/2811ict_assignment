@@ -1,44 +1,44 @@
 <div *ngIf="hasGroups">
   <div>
-    Create Channel:<br><br>
-    Group:&nbsp;&nbsp;<select [(ngModel)]="selectGroup">
+    <h4>Create Channel:</h4>
+    <p>Group:</p>&nbsp;&nbsp;<select [(ngModel)]="selectGroup">
       <option *ngFor="let group of groups" [value]="group">{{group}}</option>
     </select><br><br>
-    Channel name<br><input type="text" [(ngModel)]="channelName">&nbsp;
+    <p>Channel name</p><br><input type="text" [(ngModel)]="channelName">&nbsp;
     <button *ngIf="selectGroup && channelName" (click)="createChannel()">Confirm</button><br><br>
   
-  <br>Delete channel:<br><br>
-    Group&nbsp;&nbsp;<select [(ngModel)]="selectGroup" (change)="getChannels()">
+  <br><h4>Delete channel:</h4>
+    <p>Group</p>&nbsp;&nbsp;<select [(ngModel)]="selectGroup" (change)="getChannels()">
       <option *ngFor="let group of groups" [value]="group">{{group}}</option>
   </select><br><br>
-    Channel&nbsp;&nbsp;<select *ngIf="selectGroup && channels" [(ngModel)]="selectChannel">
+    <p>Channel</p>&nbsp;&nbsp;<select *ngIf="selectGroup && channels" [(ngModel)]="selectChannel">
       <option *ngFor="let channel of channels" [value]="channel">{{channel}}</option>&nbsp;
     </select>&nbsp;<button *ngIf="selectGroup && selectChannel" (click)="deleteChannel()">Confirm</button><br><br>
   </div>
 
   <div>
-    <br>Remove user from channel:<br><br>
-    Group&nbsp;&nbsp;<select [(ngModel)]="selectGroup" (change)="getChannels()">
+    <br><h4>Remove user from channel:</h4>
+    <p>Group</p>&nbsp;&nbsp;<select [(ngModel)]="selectGroup" (change)="getChannels()">
         <option *ngFor="let group of groups" [value]="group">{{group}}</option>
     </select><br><br>
-    Channel&nbsp;&nbsp;<select *ngIf="selectGroup && channels" [(ngModel)]="selectChannel" (change)="getChannelUsers()">
+    <p>Channel</p>&nbsp;&nbsp;<select *ngIf="selectGroup && channels" [(ngModel)]="selectChannel" (change)="getChannelUsers()">
       <option *ngFor="let channel of channels" [value]="channel">{{channel}}</option>
     </select><br><br>
-    User&nbsp;&nbsp;<select *ngIf="selectGroup && selectChannel && channelUsers" [(ngModel)]="selectUser">
+    <p>User</p>&nbsp;&nbsp;<select *ngIf="selectGroup && selectChannel && channelUsers" [(ngModel)]="selectUser">
       <option *ngFor="let user of channelUsers" [value]="user">{{user}}</option>
     </select>
     <button *ngIf="selectGroup && selectChannel" (click)="removeUser()">Confirm</button>
   </div>
   <br><br>
   <div>
-    Add user to channel:<br><br>
-    Group&nbsp;&nbsp;<select [(ngModel)]="selectGroup" (change)="getChannels()">
+    <h4>Add user to channel:</h4>
+    <p>Group</p>&nbsp;&nbsp;<select [(ngModel)]="selectGroup" (change)="getChannels()">
         <option *ngFor="let group of groups;" [value]="group">{{group}}</option>
     </select><br><br>
-    Channel&nbsp;&nbsp;<select *ngIf="selectGroup && channels" [(ngModel)]="selectChannel" (change)="getGroupUsers()">
+    <p>Channel</p>&nbsp;&nbsp;<select *ngIf="selectGroup && channels" [(ngModel)]="selectChannel" (change)="getGroupUsers()">
       <option *ngFor="let channel of channels" [value]="channel">{{channel}}</option>
     </select><br><br>
-    User&nbsp;&nbsp;<select *ngIf="selectGroup && selectChannel && users" [(ngModel)]="selectUser">
+    <p>User</p>&nbsp;&nbsp;<select *ngIf="selectGroup && selectChannel && users" [(ngModel)]="selectUser">
       <option *ngFor="let user of users" [value]="user">{{user}}</option>
     </select>&nbsp;&nbsp;
     <button *ngIf="selectGroup && selectChannel && selectUser" (click)="addUserChannel()">Confirm</button>

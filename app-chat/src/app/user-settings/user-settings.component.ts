@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {UserManagerService} from '../api-services/user-manager.service';
 import {Router} from '@angular/router';
+import {SocketService} from '../api-services/socket.service';
+import {ImageuploadService} from '../api-services/imageupload.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -19,25 +21,29 @@ export class UserSettingsComponent implements OnInit {
   newUserPassword;
   userDelete;
   superUser;
-  username:string = localStorage.getItem("username");
+  username:string;
   userSelected:string;
   permissionSelected:string;
-
+  
   userSettingSelection:string;
-  options = ['',"permissions","create"];
 
-  constructor(private userManager:UserManagerService, private router:Router) { }
+  selectedFile = null;
+  imagePath;
+
+  constructor(
+    private userManager:UserManagerService,
+    private router:Router,
+    private socket:SocketService,
+    private imgService:ImageuploadService) { }
 
   ngOnInit() {
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
 
-      if (localStorage.getItem("username") === "undefined"){
-        this.router.navigate(['/']);
-      }
+      this.username = sessionStorage.getItem("username");
     });
 
-    this.userManager.getPermissions(localStorage.getItem("username")).subscribe(data=>{
+    this.userManager.getPermissions(sessionStorage.getItem("username")).subscribe(data=>{
       this.userPermissions = data["permissions"];
       if (this.userPermissions == "super"){
         this.userPermissions = ["super","group"];
@@ -51,7 +57,7 @@ export class UserSettingsComponent implements OnInit {
 
   //Change a users permissions
   changeUserPermissions(){
-    this.userManager.modifyPermissions(localStorage.getItem("username"),
+    this.userManager.modifyPermissions(sessionStorage.getItem("username"),
     this.userSelected,this.permissionSelected).subscribe(res=>{
       if (res["success"]){
         this.userManager.getUsers().subscribe(res=>{
@@ -67,6 +73,7 @@ export class UserSettingsComponent implements OnInit {
       if (res["success"]){
         this.userManager.getUsers().subscribe(res=>{
           this.users = res["users"];
+          this.socket.update();
         })
       }
     });
@@ -76,14 +83,28 @@ export class UserSettingsComponent implements OnInit {
   deleteUser(){
     if(confirm("Are you sure you want to delete " + this.userDelete +"? They will be unable to login")){
       this.userManager.deleteUser(this.userDelete).subscribe(res=>{
-        if (this.userDelete == localStorage.getItem("username")){
-          localStorage.clear();
+        if (this.userDelete == sessionStorage.getItem("username")){
+          sessionStorage.clear();
           this.router.navigate[('')];
         }
         this.userManager.getUsers().subscribe(res=>{
           this.users = res["users"];
         })
+        this.socket.update();
       })
     };
+  }
+
+  onFileSelected(event){
+    this.selectedFile = event.target.files[0];
+  }
+
+  uploadImage(){
+    const fd = new FormData();
+    fd.append('image',this.selectedFile,this.selectedFile.name);
+    this.imgService.imgUpload(fd).subscribe(res=>{
+      this.imagePath = res["data"].filename;
+      console.log(this.imagePath);
+    })
   }
 }

@@ -2,7 +2,6 @@ module.exports = function(app,dbo){
     //Get the permissions of a user
     app.get("/api/:username/permissions",function(req,res){
         var uname = req.params.username;
-        var userExists = false;
         dbo.collection("users").findOne({"username":uname},function(err,result){
             if (err) console.log(err);
             res.send({"username":result.username, "permissions":result.permissions});
@@ -14,7 +13,6 @@ module.exports = function(app,dbo){
         var userModifyPermissions = req.body.username;
         var newPermissions = req.body.permissions;
         var updatedPermissions = false;
-        console.log(userModifyPermissions);
         dbo.collection("users").updateOne({"username":userModifyPermissions},{
             $set:{"permissions":newPermissions}
         },function(err,result){
@@ -33,7 +31,7 @@ module.exports = function(app,dbo){
         
         var uname = req.body.username;
         var password = req.body.password;
-        
+        console.log(password)
         dbo.collection("users").findOne({"username":uname},function(err,result){
             if (err) console.log(err);
             else{
@@ -67,7 +65,6 @@ module.exports = function(app,dbo){
         var username = req.body.username;
         var password = req.body.password;
         var authLogin = false;
-        console.log(username,password);
         dbo.collection("users").findOne({"username":username},function(err,result){
             if (err) throw err;
             else{

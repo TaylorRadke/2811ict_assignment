@@ -24,18 +24,31 @@ div.header{
 }
 
 #channelButton {
-    color: rgb(218, 7, 218);
+    color: rgb(255, 0, 221);
 }
 
 #groupButton {
-    color: rgb(10, 170, 10);
+    color:rgb(30, 255, 0);
 }
 #user{
     color: gold;
 }
-#msgbox{
-    width: 25em;
-    height: 25em; 
-    background:grey;
+#chat-box {
+    height: 400px;
+    width: 700px;
     overflow: auto;
+    background-color:rgb(46, 45, 45); 
+    border: 2px solid rgb(92, 92, 92);
+}
+
+th {
+    color:white;
+}
+
+#usermsg {
+    color:white;
+    width: 650px;
+    word-wrap:break-word;
+    font-size: 12px;
+   
 }

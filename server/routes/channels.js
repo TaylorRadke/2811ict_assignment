@@ -26,7 +26,6 @@ module.exports = function(app,dbo){
         dbo.collection("channels").findOne({$and:[{"group_name":group},{"channel_name":channel}]},function(err,data){
             if (err) throw err;
             else {
-                console.log(data);
                 res.send({"group":group,"channel":channel,"users":data.users});
             }
         })
@@ -45,7 +44,8 @@ module.exports = function(app,dbo){
                     dbo.collection("channels").insertOne({
                         "group_name":group,
                         "channel_name":channel,
-                        "users":[]
+                        "users":[],
+                        "messages":[]
                     })
                     createdChannel = true;
                 }

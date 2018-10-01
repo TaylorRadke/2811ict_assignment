@@ -2,7 +2,6 @@ module.exports = function(app,dbo){
     //Get the permissions of a user
     app.get("/api/:username/permissions",function(req,res){
         var uname = req.params.username;
-        var userExists = false;
         dbo.collection("users").findOne({"username":uname},function(err,result){
             if (err) console.log(err);
             res.send({"username":result.username, "permissions":result.permissions});

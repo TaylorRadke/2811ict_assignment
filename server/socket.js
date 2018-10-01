@@ -19,6 +19,7 @@ module.exports = function(app,io,dbo){
                 $push:{"messages":message}
             })
         }
+
         socket.in(roomChannel).on("add-message",function(message){
             addMessage(message);
             getMessages();
@@ -31,7 +32,7 @@ module.exports = function(app,io,dbo){
             user = room.user;
 
             socket.join(roomChannel);
-            addMessage({"text":user + " joined the channel."});
+            addMessage({"text":user + " joined the channel.","type":"announcement"});
             getMessages()
         });
 

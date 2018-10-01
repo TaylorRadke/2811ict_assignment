@@ -50,7 +50,10 @@
     <h4 style="color:white">{{inChannel}}</h4>
     <div id="chat-box">
       <div id="msg_box">
-        <div style="color:white"  *ngFor='let msg of messages'>[{{msg.user}}] {{msg.text}}</div>
+        <div id="usermsg"  *ngFor='let msg of messages'>
+          <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>{{msg.user}}</p> {{msg.text}}</div>
+          <div *ngIf="msg.type =='announcement'"><br>{{msg.text}}</div>
+        </div>
       </div>
     </div>
     <input style="width:90%" [(ngModel)]="message" type="text" placeholder="enter message">

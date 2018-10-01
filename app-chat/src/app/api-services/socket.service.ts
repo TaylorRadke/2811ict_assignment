@@ -13,7 +13,7 @@ export class SocketService {
   constructor() {}
 
    sendMessage(message:string,username:string){
-     this.socket.emit('add-message',{"text":message,"user":username});
+     this.socket.emit('add-message',{"text":message,"user":username,"type":"message"});
    }
 
    userInRoom(){return Boolean(this.room)}

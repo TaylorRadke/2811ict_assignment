@@ -34,10 +34,13 @@ export class ChatDashboardComponent implements OnInit {
     this.username = localStorage.getItem("username");
     if (this.username === "undefined") this.logout();
     this.chatDisplay = false;
+
     this.userManager.getPermissions(this.username).subscribe(res=>{
       if (res["permissions"] == "group" || res["permissions"] == "super") this.userHasPermission = true;
     });
+
     this.getUserGroups();
+
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
     });
@@ -81,13 +84,18 @@ export class ChatDashboardComponent implements OnInit {
     this.inChannel = channel;
     if (this.socket.userInRoom()){this.socket.leaveRoom();}
     this.socket.joinRoom(this.group,channel,this.username);
-    this.socket.getMessages().subscribe(res=>{this.messages=res["messages"]});
+    this.socket.getMessages().subscribe(res=>{
+      console.log(res);
+      this.messages=res["messages"]});
   }
 
   sendMessage(){
-    this.socket.sendMessage(this.message,this.username);
-    this.socket.getMessages().subscribe(res=>{
-      this.messages = res["messages"];
-    })
+    if (this.message != ''){
+      this.socket.sendMessage(this.message,this.username);
+      this.message = '';
+      this.socket.getMessages().subscribe(res=>{
+        this.messages = res["messages"];
+      })
+    }
   }
 }

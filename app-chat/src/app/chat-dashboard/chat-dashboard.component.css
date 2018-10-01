@@ -34,11 +34,19 @@ div.header{
     color: gold;
 }
 #chat-box {
-    height: 300px;
+    height: 400px;
+    width: 700px;
     overflow: auto;
     background-color:rgb(46, 45, 45); 
 }
 
 th {
     color:white;
+}
+
+#usermsg {
+    color:white;
+    width: 650px;
+    word-wrap:break-word;
+    font-size: 12px;
 }

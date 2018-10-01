@@ -1,27 +1,27 @@
 <div>
     <div class="settings">
-        Create group<br><br>
+        <h4>Create group</h4>
         <input type="text" [(ngModel)]="groupCreate" placeholder="group name">&nbsp;
         <button *ngIf="groupCreate" (click)="createGroup()">Confirm</button><br><br>
     </div>
     <div *ngIf="groups"><br>
       <div *ngIf="hasGroups" class="settings">
-          Delete group<br><br>
-          Group:
+          <h4>Delete Group</h4>
+          <p>Group:</p> 
           <select [(ngModel)]="groupDelete" >
             <option *ngFor="let group of groups" [value]="group">{{group}}</option>
           </select>&nbsp;
           <button *ngIf='groupDelete' (click)="deleteGroup()">Confirm</button><br><br>
       </div>
 
-      <br>Add user to group<br><br>
+      <h4>Add user to group</h4> 
       <p *ngIf="!hasGroups">There are no groups to display<br><br></p>
       <div *ngIf="hasGroups" class="settings">
-        Group:&nbsp;
+        <p>Group:</p>&nbsp;
         <select  [(ngModel)]="groupAddUser">
           <option *ngFor="let group of groups" [value]="group">{{group}}</option>
         </select><br><br>
-        User:
+        <p>User:</p>&nbsp;
         <select [(ngModel)]="userAdd">
           <option *ngFor="let user of users" [value]="user">{{user}}</option>
         </select>&nbsp;&nbsp;
@@ -29,17 +29,17 @@
       <br><br>
     </div>
 
-      <br>Remove user from group<br><br>
-      <p *ngIf="!hasGroups">There are no groups to display<br><br></p>
+      <h4>Remove user from group</h4>>
+      <p *ngIf="!hasGroups">There are no groups to display</p>
 
       <div *ngIf="hasGroups" class="settings">
-        Group:&nbsp;<select [(ngModel)]="groupSelected" *ngIf="groups" (change)="getGroupUsers()">
+        <p>Group:</p>&nbsp;<select [(ngModel)]="groupSelected" *ngIf="groups" (change)="getGroupUsers()">
           <option *ngFor="let group of groups" [value]="group">{{group}}</option>
         </select><br>
 
         <p *ngIf="groupSelected && !users"><br>There are no users in this group to display</p>
         <div *ngIf="groupSelected && users">
-          User:&nbsp;
+          <p>User:</p>&nbsp;
           <select [(ngModel)]="userSelected" *ngIf="groupSelected && users">
             <option *ngFor="let user of users;" [value]="user">{{user}}</option>
           </select>&nbsp;&nbsp;

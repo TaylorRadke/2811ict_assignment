@@ -21,6 +21,6 @@
     <p>User:</p>
     <select [(ngModel)]="userDelete">
       <option *ngFor="let user of users" [value]='user'>{{user}}</option>
-    </select> &nbsp;<button (click)="deleteUser()">Confirm</button>
+    </select><br><button (click)="deleteUser()">Confirm</button>
   </div>
 </div>

@@ -76,8 +76,16 @@ export class ChatDashboardComponent implements OnInit {
   showUsersInChannel(channel:string){
     this.channelManager.getChannelUsers(this.group,channel).subscribe(res=>{
       this.channelUsers = res["users"];
-      this.showUsers = true;
-      this.chatDisplay = true;
+      this.userManager.getUsers().subscribe(res=>{
+        var a = [];
+        this.channelUsers.forEach(element=>{
+          res["users"].forEach(user=>{
+            if (element == user.username) a.push(user);
+          })
+        })
+        this.channelUsers = a;
+      })
+      
     });
   }
 
@@ -92,7 +100,7 @@ export class ChatDashboardComponent implements OnInit {
         this.messages.push(res["message"]);
       });
     });
-
+    this.showUsersInChannel(this.inChannel);
 
   }
 

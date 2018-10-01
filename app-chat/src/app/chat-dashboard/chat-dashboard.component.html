@@ -41,7 +41,14 @@
         </div>
 
   </div>
-  <div id="channelUserList" class="list"></div>
+  <div id="channelUserList" class="list">
+    <table style="border: none;background-color: none;">
+      <tr *ngFor="let user of channelUsers">
+        <td><img style="width: 20px;height: 20px;" *ngIf="user.image" src="images//{{user.image}}"></td>
+        <td style="color:white;">{{user.username}}</td>
+      </tr>
+    </table>
+  </div>
   </div>
   <div class="settings">
       <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>

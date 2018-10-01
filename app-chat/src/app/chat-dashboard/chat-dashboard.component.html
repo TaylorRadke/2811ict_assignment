@@ -15,7 +15,7 @@
       <div *ngFor="let group of groups" id="groupButton" (click)="displayChannels(group)" class="accordion">
           &nbsp;{{group}}
         <div *ngFor="let channel of channels" id="channelButton" class="accordion">
-          <div *ngIf="channel.group_name == group">
+          <div *ngIf="channel.group_name == group" (click)="joinChannel(channel.channel_name)">
             &nbsp;&nbsp;&nbsp;&nbsp;{{channel.channel_name}}
           </div>
         </div>
@@ -23,6 +23,9 @@
     </div>
 
     <div id="msg_area">
+        <div *ngIf="inChannel" id="channelJoinedDiv"><div id="channelJoinedText">
+            {{inChannel}}
+          </div></div>
         <div  id="chat-box">
           <div id="msg_box">
             <div id="usermsg"  *ngFor='let msg of messages'>
@@ -35,8 +38,8 @@
           <div><input type='file' style="width: 85px;"></div>
           <div><input  style="width:100%;" [(ngModel)]="message" type="text" placeholder=" enter message"></div>
           <div> <button  style="width: 50px" (click)="sendMessage()">Send</button></div>
-         
         </div>
+
   </div>
   <div id="channelUserList" class="list"></div>
   </div>

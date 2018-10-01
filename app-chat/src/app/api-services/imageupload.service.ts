@@ -16,8 +16,4 @@ export class ImageuploadService {
   imgUploadDB(img){
     return this.http.post("/api/user/image/name",{"image":img,"username":sessionStorage.getItem("username")});
   }
-
-  getImages(){
-    return this.http.get('/api/users/images');
-  }
 }

@@ -22,6 +22,8 @@ export class ChatDashboardComponent implements OnInit {
   inChannel;
   group;
   selectedImage;
+  users;
+  avatar;
 
   constructor(private socket:SocketService, private router:Router,
     private userManager:UserManagerService, private channelManager:ChannelManagerService,
@@ -35,10 +37,11 @@ export class ChatDashboardComponent implements OnInit {
     this.userManager.getPermissions(this.username).subscribe(res=>{
       if (res["permissions"] == "group" || res["permissions"] == "super") this.userHasPermission = true;
     });
-
+    this.getUsers();
     this.getUserGroups();
     this.socket.listenUpdate().subscribe(()=>{
         this.getUserGroups();
+        this.getUsers();
         if(this.group) this.displayChannels(this.group);
         if (this.inChannel){this.showUsersInChannel(this.inChannel);}
     });
@@ -50,6 +53,14 @@ export class ChatDashboardComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
+  getUserImage(){
+    this.users.forEach(element=>{
+      if (element.username == this.username){
+        this.avatar = element.image;
+        if (this.avatar === "undefined") this.avatar = "generic-avatar.png"; 
+      }
+    })
+  }
   
   showSettings(selectedSetting:string){
     this.settingsSelect = selectedSetting;
@@ -85,6 +96,13 @@ export class ChatDashboardComponent implements OnInit {
     });
   }
 
+  getUsers(){
+    this.userManager.getUsers().subscribe(res=>{
+      this.users = res["users"];
+      this.getUserImage();
+    })
+  }
+
   joinChannel(channel:string){
     this.inChannel = channel;
     if (this.socket.userInRoom()){this.socket.leaveRoom();}
@@ -102,7 +120,7 @@ export class ChatDashboardComponent implements OnInit {
 
   sendMessage(){
     if (this.message != ''){
-      this.socket.sendMessage(this.message);
+      this.socket.sendMessage(this.message,this.avatar);
       this.message = '';
     }
   }
@@ -115,7 +133,7 @@ export class ChatDashboardComponent implements OnInit {
       fd.append('image',this.selectedImage,this.selectedImage.name);
       this.img.imgUpload(fd).subscribe(res=>{
         if (res["result"] == "ok"){
-          this.socket.sendImage(this.selectedImage.name);
+          this.socket.sendImage(this.selectedImage.name,this.avatar);
         }
       })
     }

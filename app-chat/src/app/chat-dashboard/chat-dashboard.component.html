@@ -28,15 +28,17 @@
           </div></div>
         <div  id="chat-box">
           <div id="msg_box">
-            <div id="usermsg"  *ngFor='let msg of messages'>
-              <div *ngIf="msg.type == 'message'" style="color:rgb(182, 175, 175)"><p style="font-size: 10px;color:gold">&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
-              <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
-              <div *ngIf="msg.type == 'image'">
-                <!-- <img style="width: 15px;height: 15px;" src="images/{{}}"> -->
-                <p style="font-size: 11px;color:gold">&nbsp;&nbsp;{{msg.user}}</p>
-                <img style="max-width: 500px;max-height: 500px;" src="images/{{msg.image}}">
-              </div>
-            </div>
+            <table id="usermsg"  *ngFor='let msg of messages; let i = index;'>
+                <tr style="font-size: 11px;color:gold">
+                    <img style="width: 15px;height: 15px;" src="images/{{msg.avatar}}">
+                    {{msg.user}}
+                </tr>
+                <tr></tr>
+                <tr style="width: auto;max-height: 300px;">
+                  <td *ngIf="msg.type=='image'"><img style="max-width: 250px;max-height: 250px;" src="images/{{msg.image}}"></td>
+                  <td *ngIf="msg.type=='message'">{{msg.text}}</td>
+                </tr>
+          </table>
           </div>
         </div>
         <div class="input">

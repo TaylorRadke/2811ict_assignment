@@ -29,7 +29,6 @@ module.exports = function(app,io,dbo){
             group = room.group;
             roomChannel = group+"_"+channel;
             user = room.user;
-
             socket.join(roomChannel);
             getMessages();
         });
@@ -40,7 +39,6 @@ module.exports = function(app,io,dbo){
         });
 
         socket.on("message",function(message){
-            console.log(message);
             addMessage(message);
             io.to(roomChannel).emit("message",{"message":message});
         })

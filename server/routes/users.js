@@ -131,5 +131,5 @@ module.exports = function(app,dbo,formidable){
             if (err) throw err;
             res.send({"set-image":true});
         })
-    })
+    });
 }

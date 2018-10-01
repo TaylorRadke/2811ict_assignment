@@ -2,8 +2,9 @@ import { Component, OnInit} from '@angular/core';
 import {ChannelManagerService} from '../api-services/channel-manager.service';
 import {GroupManagerService} from '../api-services/group-manager.service';
 import {UserManagerService} from '../api-services/user-manager.service';
+import {ChatDashboardComponent} from '../chat-dashboard/chat-dashboard.component';
+import {SocketService} from '../api-services/socket.service';
 
- 
 @Component({
   selector: 'app-channel-settings',
   templateUrl: './channel-settings.component.html',
@@ -28,7 +29,7 @@ export class ChannelSettingsComponent implements OnInit {
 
 
   constructor(private channelManager:ChannelManagerService, private userManager:UserManagerService,
-  private groupManager:GroupManagerService) { }
+  private groupManager:GroupManagerService,private socket:SocketService) { }
 
   ngOnInit() {
     this.groupManager.getGroups().subscribe(res=>{
@@ -47,7 +48,9 @@ export class ChannelSettingsComponent implements OnInit {
   //Create a channel
   createChannel(){
     this.channelManager.createChannel(this.selectGroup,this.channelName)
-    .subscribe();
+    .subscribe(()=>{
+      this.socket.update();
+    });
   }
 
   //Get all channels in a group
@@ -62,6 +65,7 @@ export class ChannelSettingsComponent implements OnInit {
     this.channelManager.removeChannel(this.selectGroup,this.selectChannel).subscribe(res=>{
       if (res["channel_deleted"]){
         this.getChannels();
+        this.socket.update();
       }
     })
   }
@@ -81,6 +85,7 @@ export class ChannelSettingsComponent implements OnInit {
           this.channelUsers = res["users"];
         })
       }
+      this.socket.update();
     })
   }
 
@@ -94,6 +99,7 @@ export class ChannelSettingsComponent implements OnInit {
           }
           
         });
+        this.socket.update();
       }
     })
   }

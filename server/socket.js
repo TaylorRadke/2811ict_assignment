@@ -44,6 +44,10 @@ module.exports = function(app,io,dbo){
             addMessage(message);
             io.to(roomChannel).emit("message",{"message":message});
         })
+
+        socket.on("new_update",function(){
+            io.emit("updated");
+        })
     });
 
     

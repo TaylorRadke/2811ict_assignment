@@ -40,9 +40,12 @@ export class ChatDashboardComponent implements OnInit {
     });
 
     this.getUserGroups();
-
-    this.userManager.getUsers().subscribe(res=>{
-      this.users = res["users"];
+    this.getUsers();
+    this.socket.listenUpdate().subscribe(()=>{
+        this.getUserGroups();
+        this.getUsers();
+        this.getUserGroups();
+        if(this.group) this.displayChannels(this.group);
     });
   }
 
@@ -94,6 +97,12 @@ export class ChatDashboardComponent implements OnInit {
     });
 
 
+  }
+
+  getUsers(){
+    this.userManager.getUsers().subscribe(res=>{
+      this.users = res["users"];
+    });
   }
 
   sendMessage(){

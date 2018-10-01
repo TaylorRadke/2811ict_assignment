@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {UserManagerService} from '../api-services/user-manager.service';
 import {Router} from '@angular/router';
+import {SocketService} from '../api-services/socket.service';
+
 
 @Component({
   selector: 'app-user-settings',
@@ -26,7 +28,7 @@ export class UserSettingsComponent implements OnInit {
   userSettingSelection:string;
   options = ['',"permissions","create"];
 
-  constructor(private userManager:UserManagerService, private router:Router) { }
+  constructor(private userManager:UserManagerService, private router:Router,private socket:SocketService) { }
 
   ngOnInit() {
     this.userManager.getUsers().subscribe(res=>{
@@ -67,6 +69,7 @@ export class UserSettingsComponent implements OnInit {
       if (res["success"]){
         this.userManager.getUsers().subscribe(res=>{
           this.users = res["users"];
+          this.socket.update();
         })
       }
     });
@@ -83,6 +86,7 @@ export class UserSettingsComponent implements OnInit {
         this.userManager.getUsers().subscribe(res=>{
           this.users = res["users"];
         })
+        this.socket.update();
       })
     };
   }

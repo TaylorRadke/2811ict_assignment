@@ -6,8 +6,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class SocketService {
-  private url = 'http://localhost:3000/';
-  private socket;
+  private socket = io('http://localhost:3000/');
   private room;
   
   constructor() {}
@@ -28,7 +27,6 @@ export class SocketService {
 
     joinRoom(group:string,channel:string,user:string){
       this.room = group + "_" + channel;
-      this.socket = io(this.url);
       this.socket.emit('join',{"channel":channel,"group":group,"user":user});
     }
     
@@ -39,6 +37,19 @@ export class SocketService {
         this.socket.on("message",function(data){
           observer.next(data);
         })
+      })
+    }
+
+    update(){
+      this.socket.emit("new_update");
+    }
+
+    listenUpdate(){
+      return new Observable(observer=>{
+        this.socket.on("updated",function(){
+          observer.next();
+        });
+
       })
     }
 }

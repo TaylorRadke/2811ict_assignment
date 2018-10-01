@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const frm = require('formidable');
+const formidable = require('formidable');
 const MongoDB = require("mongodb").MongoClient;
 const URL = "mongodb://localhost:27017/mydb";
 
@@ -21,8 +21,7 @@ MongoDB.connect(URL,function(err,db){
     dbo = db.db('Chat_app_db');
     console.log("Connected to db");
 
-    require('./routes/imageUpload.js')(app,path,frm);
-    require('./routes/users')(app,dbo);
+    require('./routes/users')(app,dbo,formidable);
     require("./routes/groups")(app,dbo);
     require('./routes/channels.js')(app,dbo);
     require('./socket.js')(app,io,dbo);

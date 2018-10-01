@@ -1,5 +1,4 @@
 <div class="container">
-  <div></div>
   <div id="header">
       <h2 style="color:white">Welcome, {{username}}</h2>
       <button (click)="logout()">Logout</button>
@@ -11,53 +10,25 @@
       <button *ngIf="userHasPermission" (click)="showSettings('channel')">Channel Settings</button>
   </div>
   <div></div>
-  <div id="lists">
-      <div id="userList">
-          <table id="userTable">
-            <tr>
-              <th>
-                <b>Users</b>
-              </th>
-            <br>
-            <br>
-            </tr>
-            <tr id="user" *ngFor="let user of users">{{user}}</tr><br>
-          </table>
-        </div>
-        <div id="groupList">
-            <table>
-              <tr>
-                <th>Groups</th>
-              </tr>
-              <tr *ngFor="let group of groups">
-                <button class="link" id="groupButton" (click)="displayChannels(group)">{{group}}</button>
-              </tr>
-            </table>
+  <div class="messagecontainer">
+    <div id="groupList" class="list"></div>
+    <div id="msg_area">
+        <div  id="chat-box">
+          <div id="msg_box">
+            <div id="usermsg"  *ngFor='let msg of messages'>
+              <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
+              <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
+            </div>
           </div>
-      <div>
-          <br>
-          <table *ngIf="channels">
-            <tr>
-              <th>Channels</th>
-            </tr>
-            <tr *ngFor="let channel of channels">
-              <button id="channelButton" class="link" (click)="joinChannel(channel)">{{channel}}</button>
-            </tr>
-          </table>
+        </div>
+        <div class="input">
+          <div><input type='file' style="width: 85px;"></div>
+          <div><input  style="width:100%;" [(ngModel)]="message" type="text" placeholder=" enter message"></div>
+          <div> <button  style="width: 50px" (click)="sendMessage()">Send</button></div>
+         
         </div>
   </div>
-  <div *ngIf="inChannel">
-    <h4 style="color:orange;font-size: 22px;">{{inChannel}}</h4>
-    <div id="chat-box">
-      <div id="msg_box">
-        <div id="usermsg"  *ngFor='let msg of messages'>
-          <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
-          <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
-        </div>
-      </div>
-    </div>
-    <input style="width:645px" [(ngModel)]="message" type="text" placeholder="enter message">
-    <button style="width: 50px" (click)="sendMessage()">Send</button>
+  <div id="channelUserList" class="list"></div>
   </div>
   <div class="settings">
       <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>

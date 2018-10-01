@@ -39,7 +39,6 @@ export class UserSettingsComponent implements OnInit {
   ngOnInit() {
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
-
       this.username = sessionStorage.getItem("username");
     });
 
@@ -104,7 +103,11 @@ export class UserSettingsComponent implements OnInit {
     fd.append('image',this.selectedFile,this.selectedFile.name);
     this.imgService.imgUpload(fd).subscribe(res=>{
       this.imagePath = res["data"].filename;
-      console.log(this.imagePath);
+      if (res["result"] == "ok"){
+        this.imgService.imgUploadDB(this.imagePath).subscribe(res=>{
+          console.log(res);
+        });
+      }
     })
   }
 }

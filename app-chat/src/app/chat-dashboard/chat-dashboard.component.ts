@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {UserManagerService} from '../api-services/user-manager.service';
 import {ChannelManagerService} from '../api-services/channel-manager.service';
 import {GroupManagerService} from '../api-services/group-manager.service';
+import {ImageuploadService} from '../api-services/imageupload.service';
 
 @Component({
   selector: 'app-chat',
@@ -27,7 +28,7 @@ export class ChatDashboardComponent implements OnInit {
 
   constructor(private socket:SocketService, private router:Router,
     private userManager:UserManagerService, private channelManager:ChannelManagerService,
-    private groupManager:GroupManagerService) { }
+    private img:ImageuploadService) { }
 
   ngOnInit() {
     
@@ -47,6 +48,10 @@ export class ChatDashboardComponent implements OnInit {
         this.getUserGroups();
         if(this.group) this.displayChannels(this.group);
     });
+    this.socket.joinRoom("new group","channel",this.username);
+    this.img.getImages().subscribe(res=>{
+      console.log(res);
+    })
   }
 
   //Logout as a user

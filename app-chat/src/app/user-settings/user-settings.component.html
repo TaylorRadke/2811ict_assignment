@@ -3,7 +3,7 @@
     <h4>Modify Permissions</h4>
 
     <p >User:</p><select [(ngModel)]="userSelected" class="selection">
-        <option *ngFor="let user of users" [value]="user">{{user}}</option>
+        <option *ngFor="let user of users" [value]="user.username">{{user.username}}</option>
     </select><br> 
     <p>Permissions:</p><select [(ngModel)]="permissionSelected" class="selection">
         <option *ngFor='let permission of userPermissions' [value]="permission">{{permission}}</option>

@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   login(){
     this.userManager.login(this.username,this.password).subscribe(res=>{
       if (res["authlogin"]){
-        localStorage.setItem("username",this.username);
+        sessionStorage.setItem("username",this.username);
         this.router.navigate(['/chat-dashboard']);
       }else{
         this.loginFail = true;

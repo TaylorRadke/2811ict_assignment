@@ -31,7 +31,7 @@ export class ChatDashboardComponent implements OnInit {
 
   ngOnInit() {
     
-    this.username = localStorage.getItem("username");
+    this.username = sessionStorage.getItem("username");
     if (this.username === "undefined") this.logout();
     this.chatDisplay = false;
 
@@ -49,7 +49,7 @@ export class ChatDashboardComponent implements OnInit {
   //Logout as a user
   logout(){
     this.socket.leaveRoom();
-    localStorage.clear();
+    sessionStorage.clear();
     this.socket.disconnect();
     this.router.navigateByUrl('');
   }
@@ -60,7 +60,7 @@ export class ChatDashboardComponent implements OnInit {
   }
 
   getUserGroups(){
-    this.channelManager.userIsIn(localStorage.getItem("username")).subscribe(res=>{
+    this.channelManager.userIsIn(this.username).subscribe(res=>{
       this.groups = res["groups"];
     });
   }

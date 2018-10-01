@@ -51,7 +51,7 @@
     <div id="chat-box">
       <div id="msg_box">
         <div id="usermsg"  *ngFor='let msg of messages'>
-          <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
+          <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
           <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
         </div>
       </div>

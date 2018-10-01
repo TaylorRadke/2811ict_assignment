@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {UserManagerService} from '../api-services/user-manager.service';
 import {Router} from '@angular/router';
 import {SocketService} from '../api-services/socket.service';
-
+import {ImageuploadService} from '../api-services/imageupload.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -21,22 +21,26 @@ export class UserSettingsComponent implements OnInit {
   newUserPassword;
   userDelete;
   superUser;
-  username:string = localStorage.getItem("username");
+  username:string;
   userSelected:string;
   permissionSelected:string;
-
+  
   userSettingSelection:string;
-  options = ['',"permissions","create"];
 
-  constructor(private userManager:UserManagerService, private router:Router,private socket:SocketService) { }
+  selectedFile = null;
+  imagePath;
+
+  constructor(
+    private userManager:UserManagerService,
+    private router:Router,
+    private socket:SocketService,
+    private imgService:ImageuploadService) { }
 
   ngOnInit() {
     this.userManager.getUsers().subscribe(res=>{
       this.users = res["users"];
 
-      if (localStorage.getItem("username") === "undefined"){
-        this.router.navigate(['/']);
-      }
+      this.username = sessionStorage.getItem("username");
     });
 
     this.userManager.getPermissions(sessionStorage.getItem("username")).subscribe(data=>{
@@ -89,5 +93,18 @@ export class UserSettingsComponent implements OnInit {
         this.socket.update();
       })
     };
+  }
+
+  onFileSelected(event){
+    this.selectedFile = event.target.files[0];
+  }
+
+  uploadImage(){
+    const fd = new FormData();
+    fd.append('image',this.selectedFile,this.selectedFile.name);
+    this.imgService.imgUpload(fd).subscribe(res=>{
+      this.imagePath = res["data"].filename;
+      console.log(this.imagePath);
+    })
   }
 }

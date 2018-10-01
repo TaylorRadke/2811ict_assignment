@@ -14,8 +14,8 @@ import {SocketService} from './api-services/socket.service';
 import {ChannelManagerService} from './api-services/channel-manager.service';
 import {GroupManagerService} from './api-services/group-manager.service';
 import {UserManagerService} from './api-services/user-manager.service';
-import { ChannelSettingsComponent } from './channel-settings/channel-settings.component';
-
+import {ChannelSettingsComponent } from './channel-settings/channel-settings.component';
+import {ImageuploadService} from './api-services/imageupload.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,8 @@ import { ChannelSettingsComponent } from './channel-settings/channel-settings.co
     SocketService,
     ChannelManagerService,
     GroupManagerService,
-    UserManagerService
+    UserManagerService,
+    ImageuploadService
   ],
   bootstrap: [AppComponent]
 })

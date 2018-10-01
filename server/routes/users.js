@@ -32,7 +32,7 @@ module.exports = function(app,dbo){
         
         var uname = req.body.username;
         var password = req.body.password;
-        
+        console.log(password)
         dbo.collection("users").findOne({"username":uname},function(err,result){
             if (err) console.log(err);
             else{

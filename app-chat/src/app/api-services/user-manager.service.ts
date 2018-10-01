@@ -8,8 +8,8 @@ export class UserManagerService {
 
   constructor(private http:HttpClient) { }
 
-  createUser(username:string,email:string){
-    return this.http.post('/api/users',{"username":username,"email":email});
+  createUser(username:string,password:string){
+    return this.http.post('/api/users',{"username":username,"password":password});
   }
 
   getUsers(){

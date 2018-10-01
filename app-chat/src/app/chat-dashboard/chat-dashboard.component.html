@@ -11,7 +11,17 @@
   </div>
   <div></div>
   <div class="messagecontainer">
-    <div id="groupList" class="list"></div>
+    <div id="groupList" class="list">
+      <div *ngFor="let group of groups" id="groupButton" (click)="displayChannels(group)" class="accordion">
+          &nbsp;{{group}}
+        <div *ngFor="let channel of channels" id="channelButton" class="accordion">
+          <div *ngIf="channel.group_name == group">
+            &nbsp;&nbsp;&nbsp;&nbsp;{{channel.channel_name}}
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="msg_area">
         <div  id="chat-box">
           <div id="msg_box">

@@ -9,7 +9,7 @@ module.exports = function(app,dbo){
             if (err) throw err;
             else{
                 data.forEach(function(element){
-                    channels.push(element.channel_name);
+                    channels.push({"channel_name":element.channel_name,"group_name":element.group_name});
                 });
                 res.send({"group":group,"channels":channels});
                 

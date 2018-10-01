@@ -22,24 +22,27 @@
 
 .list {
     overflow: auto;
-    background-color: rgb(107, 107, 107);
+    background-color: rgb(97, 97, 97);
     border: 2px solid rgb(122, 122, 122);
     height: auto;
     width: auto;
 }
 
 
-button.link {
+.accordion {
     background: none;
+    cursor: pointer;
+    text-align: left;
     border: none;
+    outline: none;
+    transition: 0.4s;
 }
-
 div.header{
     text-align: center;
 }
 
 #channelButton {
-    color: rgb(255, 0, 221);
+    color: gold;
 }
 
 #groupButton {

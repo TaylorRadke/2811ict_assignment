@@ -41,10 +41,8 @@ export class ChatDashboardComponent implements OnInit {
     });
 
     this.getUserGroups();
-    this.getUsers();
+    console.log(this.groups);
     this.socket.listenUpdate().subscribe(()=>{
-        this.getUserGroups();
-        this.getUsers();
         this.getUserGroups();
         if(this.group) this.displayChannels(this.group);
     });
@@ -53,7 +51,6 @@ export class ChatDashboardComponent implements OnInit {
       console.log(res);
     })
   }
-
   //Logout as a user
   logout(){
     this.socket.leaveRoom();
@@ -69,6 +66,7 @@ export class ChatDashboardComponent implements OnInit {
   getUserGroups(){
     this.channelManager.userIsIn(this.username).subscribe(res=>{
       this.groups = res["groups"];
+      console.log(this.groups);
     });
   }
   //Display Channels for a group
@@ -76,6 +74,7 @@ export class ChatDashboardComponent implements OnInit {
     this.group = group;
     this.channelManager.getChannels(group).subscribe(res=>{
       this.channels = res["channels"];
+      console.log(res);
     });
   }
 

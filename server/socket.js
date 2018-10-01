@@ -40,6 +40,11 @@ module.exports = function(app,io,dbo){
             addMessage({"text":user + " left the channel"});
             socket.leave(roomChannel);
         });
+
+        socket.on("message",function(message){
+            addMessage(message);
+            io.to(roomChannel).emit("newMessage",{"message":message});
+        })
     });
 
     

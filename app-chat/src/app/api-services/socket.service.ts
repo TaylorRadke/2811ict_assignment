@@ -13,7 +13,7 @@ export class SocketService {
   constructor() {}
 
    sendMessage(message:string,username:string){
-     this.socket.emit('add-message',{"text":message,"user":username,"type":"message"});
+     this.socket.emit('message',{"text":message,"user":username,"type":"message"});
    }
 
    userInRoom(){return Boolean(this.room)}
@@ -35,4 +35,12 @@ export class SocketService {
     }
     
     leaveRoom(){this.socket.emit('leave');}
+
+    newMessage(){
+      return new Observable(observer=>{
+        this.socket.on("newMessage",function(data){
+          observer.next(data);
+        })
+      })
+    }
 }

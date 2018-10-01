@@ -11,8 +11,12 @@ export class SocketService {
   
   constructor() {}
 
-   sendMessage(message:string,username:string){
-     this.socket.emit('message',{"text":message,"user":username,"type":"message"});
+   sendMessage(message:string){
+     this.socket.emit('message',{"text":message,"user":sessionStorage.getItem('username'),"type":"message"});
+   }
+
+   sendImage(image:string){
+     this.socket.emit("message",{"user":sessionStorage.getItem("username"),"type":"image","image":image});
    }
 
    userInRoom(){return this.room}

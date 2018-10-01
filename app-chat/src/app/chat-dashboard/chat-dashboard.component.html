@@ -29,13 +29,17 @@
         <div  id="chat-box">
           <div id="msg_box">
             <div id="usermsg"  *ngFor='let msg of messages'>
-              <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
+              <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold">&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
               <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
+              <div *ngIf="msg.type == 'image'">
+                <p style="font-size: 10px;color:gold">&nbsp;&nbsp;{{msg.user}}</p>
+                <img style="width: 100px;height: 100px;" src="images/{{msg.image}}">
+              </div>
             </div>
           </div>
         </div>
         <div class="input">
-          <div><input type='file' style="width: 85px;"></div>
+          <div><input (input)="imgMessage($event)" type='file' style="width: 85px;"></div>
           <div><input  style="width:100%;" [(ngModel)]="message" type="text" placeholder=" enter message"></div>
           <div> <button  style="width: 50px" (click)="sendMessage()">Send</button></div>
         </div>

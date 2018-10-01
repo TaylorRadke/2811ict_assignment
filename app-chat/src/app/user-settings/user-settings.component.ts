@@ -104,9 +104,7 @@ export class UserSettingsComponent implements OnInit {
     this.imgService.imgUpload(fd).subscribe(res=>{
       this.imagePath = res["data"].filename;
       if (res["result"] == "ok"){
-        this.imgService.imgUploadDB(this.imagePath).subscribe(res=>{
-          console.log(res);
-        });
+        this.imgService.imgUploadDB(this.imagePath).subscribe();
       }
     })
   }

@@ -3,7 +3,6 @@ import {SocketService} from '../api-services/socket.service';
 import {Router} from '@angular/router';
 import {UserManagerService} from '../api-services/user-manager.service';
 import {ChannelManagerService} from '../api-services/channel-manager.service';
-import {GroupManagerService} from '../api-services/group-manager.service';
 import {ImageuploadService} from '../api-services/imageupload.service';
 
 @Component({
@@ -20,10 +19,9 @@ export class ChatDashboardComponent implements OnInit {
   userHasPermission;
   channels;
   channelUsers;
-  showUsers;
-  chatDisplay;
   inChannel;
   group;
+  selectedImage;
 
   constructor(private socket:SocketService, private router:Router,
     private userManager:UserManagerService, private channelManager:ChannelManagerService,
@@ -33,7 +31,6 @@ export class ChatDashboardComponent implements OnInit {
     
     this.username = sessionStorage.getItem("username");
     if (this.username === "undefined") this.logout();
-    this.chatDisplay = false;
 
     this.userManager.getPermissions(this.username).subscribe(res=>{
       if (res["permissions"] == "group" || res["permissions"] == "super") this.userHasPermission = true;
@@ -45,7 +42,6 @@ export class ChatDashboardComponent implements OnInit {
         if(this.group) this.displayChannels(this.group);
         this.showUsersInChannel(this.inChannel);
     });
-    this.socket.joinRoom("new group","channel",this.username);
   }
   //Logout as a user
   logout(){
@@ -106,8 +102,22 @@ export class ChatDashboardComponent implements OnInit {
 
   sendMessage(){
     if (this.message != ''){
-      this.socket.sendMessage(this.message,this.username);
+      this.socket.sendMessage(this.message);
       this.message = '';
+    }
+  }
+
+  imgMessage(event){
+    this.selectedImage = event.target.files[0];
+
+    if(confirm("Upload " + this.selectedImage.name + "?")){
+      var fd = new FormData();
+      fd.append('image',this.selectedImage,this.selectedImage.name);
+      this.img.imgUpload(fd).subscribe(res=>{
+        if (res["result"] == "ok"){
+          this.socket.sendImage(this.selectedImage.name);
+        }
+      })
     }
   }
 }

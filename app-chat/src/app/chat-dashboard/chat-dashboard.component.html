@@ -44,7 +44,8 @@
   <div id="channelUserList" class="list">
     <table style="border: none;background-color: none;">
       <tr *ngFor="let user of channelUsers">
-        <td><img style="width: 20px;height: 20px;" *ngIf="user.image" src="images//{{user.image}}"></td>
+        <td><img style="width: 20px;height: 20px;" *ngIf="user.image" src="images/{{user.image}}">
+        <img style="width: 20px;height: 20px;" *ngIf="!user.image" src="https://utulsa.edu/wp-content/uploads/2018/08/generic-avatar-300x300.jpg"></td>
         <td style="color:white;">{{user.username}}</td>
       </tr>
     </table>

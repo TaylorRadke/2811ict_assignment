@@ -15,7 +15,6 @@ export class ChatDashboardComponent implements OnInit {
   username:string;
   messages;
   message:string;
-  users;
   groups;
   settingsSelect;
   userHasPermission;
@@ -44,6 +43,7 @@ export class ChatDashboardComponent implements OnInit {
     this.socket.listenUpdate().subscribe(()=>{
         this.getUserGroups();
         if(this.group) this.displayChannels(this.group);
+        this.showUsersInChannel(this.inChannel);
     });
     this.socket.joinRoom("new group","channel",this.username);
   }
@@ -102,12 +102,6 @@ export class ChatDashboardComponent implements OnInit {
     });
     this.showUsersInChannel(this.inChannel);
 
-  }
-
-  getUsers(){
-    this.userManager.getUsers().subscribe(res=>{
-      this.users = res["users"];
-    });
   }
 
   sendMessage(){

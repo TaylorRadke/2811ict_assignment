@@ -1,10 +1,16 @@
 .container { 
     display:grid;
-    grid-template-columns: auto auto auto;
-    grid-row-gap: 5em;
-    grid-column-gap: 5em;
+    grid-template-columns: auto auto;
+    grid-row-gap: 30px;
+    grid-column-gap: 20px;
 }
 
+.messagecontainer{
+    display: grid;
+    grid-template-columns: 15% auto 25%;
+    grid-column-gap: 2.5px;
+    height: 300px;
+}
 #userTable {
     font-size: 17px;
 }
@@ -14,31 +20,70 @@
     size: 5%;
 }
 
-button.link {
-    background: none;
-    border: none;
+.list {
+    overflow: auto;
+    background-color: rgb(68, 68, 68);
+    border: 1px solid rgb(107, 107, 107);
+    height: auto;
+    width: auto;
+    margin-top:2px;
 }
 
+
+.accordion {
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    border: none;
+    width:inherit;
+    outline: none;
+    transition: 0.4s;
+    font-size:15px;
+}
 div.header{
     text-align: center;
 }
 
 #channelButton {
-    color: rgb(255, 0, 221);
+    color: gold;
+    font-size:12px;
 }
 
 #groupButton {
     color:rgb(30, 255, 0);
+    font-size:13px;
 }
 #user{
     color: gold;
 }
+.input {
+    display:grid;
+    grid-template-columns: 85px auto 50px; 
+}
+
+#channelJoinedDiv{
+    background-color:rgb(59, 59, 59);
+    border: 0.5px solid rgb(122, 122, 122);
+    width:auto;
+    min-height: 15px;
+    height: auto;
+}
+#channelJoinedText {
+    color:rgb(255, 166, 0);
+    font-size:15px;
+    min-height: 10px;
+    height: auto;
+    float:right;
+    padding-right: 5px;
+}
 #chat-box {
-    height: 400px;
-    width: 700px;
+    height:300px;
+    width: auto;
+    margin-top:2px;
     overflow: auto;
     background-color:rgb(46, 45, 45); 
-    border: 2px solid rgb(92, 92, 92);
+    border: 1px solid rgb(92, 92, 92);
+    border-top: 1px solid rgb(92, 92, 92);
 }
 
 th {
@@ -47,8 +92,14 @@ th {
 
 #usermsg {
     color:white;
-    width: 650px;
+    width: auto;
     word-wrap:break-word;
     font-size: 12px;
-   
+}
+
+#msg_area{
+    width:auto;
+}
+h4 {
+    color:white;
 }

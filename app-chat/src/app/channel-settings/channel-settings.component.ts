@@ -25,7 +25,6 @@ export class ChannelSettingsComponent implements OnInit {
 
   hasGroups;
   settingsSelect
-  options = ['',"create","delete","remove","add"];
 
 
   constructor(private channelManager:ChannelManagerService, private userManager:UserManagerService,
@@ -56,7 +55,10 @@ export class ChannelSettingsComponent implements OnInit {
   //Get all channels in a group
   getChannels(){
     this.channelManager.getChannels(this.selectGroup).subscribe(res=>{
-      this.channels = res["channels"];
+      this.channels = [];
+      res["channels"].forEach(element=>{
+        this.channels.push(element.channel_name);
+      });
     })
   }
 
@@ -91,8 +93,8 @@ export class ChannelSettingsComponent implements OnInit {
 
   //Remove a user from a channel
   removeUser(){
-    this.channelManager.removeUser(this.selectUser,this.selectGroup,this.selectChannel).subscribe(res=>{
-      if (res["user-deleted"]){
+    this.channelManager.removeUser(this.selectUser,this.selectGroup,this.selectChannel).subscribe(data=>{
+      if (data["user-deleted"]){
         this.channelManager.getChannelUsers(this.selectGroup,this.selectChannel).subscribe(res=>{
           if (res["user_removed"]){
             this.channelUsers = res["users"];
@@ -107,8 +109,10 @@ export class ChannelSettingsComponent implements OnInit {
   //Get all users in a group
   getGroupUsers(){
     this.groupManager.getUsers(this.selectGroup).subscribe(res=>{
-      this.groupUsers = res["users"];
+      this.groupUsers = []
+      res["users"].forEach(user=>{
+        this.groupUsers.push(user);
+      });
     });
   }
-
 }

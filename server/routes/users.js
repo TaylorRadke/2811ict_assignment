@@ -1,4 +1,4 @@
-module.exports = function(app,dbo){
+module.exports = function(app,dbo,formidable){
     //Get the permissions of a user
     app.get("/api/:username/permissions",function(req,res){
         var uname = req.params.username;
@@ -31,12 +31,11 @@ module.exports = function(app,dbo){
         
         var uname = req.body.username;
         var password = req.body.password;
-        console.log(password)
         dbo.collection("users").findOne({"username":uname},function(err,result){
             if (err) console.log(err);
             else{
                 if (result == null){
-                    dbo.collection("users").insertOne({"username":uname,"password":password},function(err,result){
+                    dbo.collection("users").insertOne({"username":uname,"password":password,"avatar":"generic-avatar.png"},function(err,result){
                         if (err) console.log(err);
                         else res.send({"success":true});
                     });
@@ -50,11 +49,12 @@ module.exports = function(app,dbo){
 
     //Get a list of all users
     app.get('/api/users',function(req,res){
+        console.log("getting users");
         dbo.collection("users").find({}).toArray(function(err,result){
             if (err) console.log(err);
             var users = [];
             result.forEach(function(element){
-                users.push(element.username);
+                users.push({"username":element.username,"image":element.avatar});
             });
             res.send({"users":users});
         })
@@ -88,5 +88,48 @@ module.exports = function(app,dbo){
                 res.send({"ok":Boolean(result.result.n)});
             }
         });
+    });
+
+    //upload image to server
+    app.post('/api/user/image/upload',function(req,res){
+        var form = new formidable.IncomingForm({uploadDir:'./userImages'});
+
+        form.keepExtensions = true;
+
+        form.on('error',function(err){
+            throw err;
+            res.send({
+                result:"failed",
+                data:{},
+                numberOfImages:0,
+                message:"Cannot upload images. Error is " + err
+            });
+        })
+
+        form.on('fileBegin',function(name,file){
+            file.path = form.uploadDir + '/' + file.name;
+        })
+        
+        form.on('file',function(field,file){
+            res.send({
+                result:"ok",
+                data:{'filename':file.name,'size':file.size},
+                message:"upload successful"
+            });
+        })
+        form.parse(req);
+    });
+
+    //Add user image name to db
+    app.post('/api/user/image/name',function(req,res){
+        var username = req.body.username;
+        var img_name = req.body.image;
+
+        dbo.collection("users").updateOne({"username":username},{
+            $set:{"avatar":img_name}
+        },function(err){
+            if (err) throw err;
+            res.send({"set-image":true});
+        })
     });
 }

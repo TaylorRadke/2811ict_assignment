@@ -1,8 +1,11 @@
 ## Description
 The task of this assignment is to build a chat system with users,groups,channels using Angular,Node.js and Sockets.
-##Instructions
-To start server, navigate to the server directory and run app.js with node. To reset groups or users simply delete the groups.json
-or users.json file and restart the server. The server will create the files with initial values.
+## Instructions
+To run this program:
+1. ensure that mongo is downloaded and running.
+2. Navigate to server directory
+3. Run, node app
+4. Open browser at localhost:3000
 
 ## Git Usage
 Git is used in this assignment for version control and saving. Github is used to store the repository of this project.
@@ -12,22 +15,8 @@ The github repository can be found at https://github.com/TaylorRadke/2811ict_ass
 Data is stored by serialising JavaScript objects into JSON strings and stored in the file system.
 
 ### Users
-When a user is created the username and email is stored in the /resources/users.json file which also stores the users permissions.
-When the server starts. The servers first user is the super user which takes the from:
-```json
-    {
-        "username":"super",
-        "permissions":"super"
-    }
-```
-A users permissions can be changed. When a new user is created it's permissions are set to none:
-```json
-    {
-        "username":"The username the user enters at the login screen",
-        "email":"the users email",
-        "permissions":"none"
-    }
-```
+Users are stored in the database in the users collection, with the user's username, password and avatar being stored.
+
 #### Permissions
 --- Super 
 A super user also has the same abilities of a group user, it also has the ability to create a new user or currect user with group or super permissions. The super user also has the ability to delete users from the site.
@@ -37,36 +26,59 @@ A group user has the ability to create or delete groups and a users to those gro
  They also can create or delete channels within a group and add or remove users from those channels.
 
 ### Groups
-The groups are stored in the /resources/groups.json file. A user with group or super permissions is allowed to create a new group. Inside a group a group admin can add channels which are rooms for users to communicate via the chat system. When the server starts it creates a main channel:
+The groups are stored in the database's groups collection. A user with group or super permissions is allowed to create a new group.
+Groups are stored in the form:
 ```json
     [{
-        "group":"main",
-        "channels":[],
-        "users":["super"]
+        "group_name":"the group's name",
+        "users":["array of users"]
     }]
 ```
-When a new user is created they are added as a user to the main group. when a user with appopriate permissions creates a new group
-it is added in the group array:
-```json
-    [
-        {
-            "group":"main",
-            "channels":[],
-            "users":["super"] 
-        },
-        {
-            "group":"The name the group creator entered",
-            "channels":[],
-            "users":["The group creator"]
-        }
-    ]
-```
+
 ### Channels
-Within a group there are is a group channels. The channels in the group take the form:
+Within a group there exist channels. Channels are stored in the database's channels collection
+The channels in the group take the form:
+```json
+    {   
+        "group_name":"the parent group of the channel",
+        "channel name":"name of the channel the user entered",
+        "users":["array of users"],
+        "messages":[{"array of json object which store messages"}]
+    }
+```
+## Sockets
+The main feature of the site is it's chat system. The chat uses sockets to broadcast messages to users within the same room.
+
+### Join Room
+The user joins the room by emitting a "join" message with the user requesting to join as well as the channel and channel's parent gorup.
+The user will be added to the room and a message will be emitted to the room that the user has joined.
+
+### Leave Room
+The user leaves the room by emitting a "leave" message and the socket will disconnect from the room after emitting a message to the room
+that the user is leaving the room.
+
+### Send Message
+When the user sends a message, the socket will emit the message to the server with the message being in the form:
+```json
+{
+    "text":"the message",
+    "type":"message",
+    "user":"the username of the user sending the message",
+    "avatar":"the user's avatar, to display it in chat"
+}
+```
+Once the server has recieved the message it will push it to the channels messages to store for retrieval when a user joins the channel
+to display all previously sent message.
+
+### Send Image
+A user can upload an image to the chat, when they confirm that they want to upload the image, the image is stored on the server.
+Once the client is notified that the image has successfuly been uploaded the user emits a message of the form:
 ```json
     {
-        "channel name":"name of the channel the user entered",
-        "users":[]
+        "user":"users username",
+        "type":"image",
+        "avatar":"user's avatar",
+        "image":"the image's name"
     }
 ```
 
@@ -197,18 +209,11 @@ The login route only requires that the username of the user wanting to login be 
         "authLogin":false
     }
 ```
+### Post /api/user/image/upload
+This route uploads an image to the server in the server's userImages dir.
 
-### POST /api/users/logout
---- Description
-Requests that the user be logged out. this route uses a post method so that a user can be signed out without checking that they exist.
-
---- Data
-Only provides the username as:
-```json
-    {
-        "username":"the username of the user wanting to logout"
-    }
-```
+### Post /api/user/image/name
+This route sets the provided user's avatar to the name of the requests image.
 
 ### DELETE /api/users/:username
 --- Description
@@ -279,7 +284,7 @@ Get a list of all existing groups
 Get a list of all the users in the group specified in the request parameter group.
 
 --- Response
-**On succes**
+**On success**
 ```json
     {
         "group":"name of the groupe",
@@ -383,7 +388,6 @@ Returns a list of channels in the group
 Get a list of users in a channel
 
 --- Data
-
 The group and channel to check is specified in the group and channel params of the request url.
 
 --- Response
@@ -480,19 +484,47 @@ Group and channel to delete are contained in request url params.
         "channel":"name of channel",
         "channel-removed":false
     }
-```
-
+``` 
 ## Angular Architecture
 ### Components
 #### Chat Dashboard
-The chat dashboard is the main component of the chat system. It contains all the other components. It includes all 
-admin settings. 
+The Chat dashboard is the main component of the site which contains all the other components.
+##### Group List
+The dashboard shows a list of all the groups that the user is in and allows them to select a channel to join.
+Clicking on the channel will tell the client to join the channel. The dashboard also contains
+
+##### User List
+When a channel is joined the list is populated with all the users in the channel with their images and usernames.
+
+##### Text Chat
+When a channel is joined the text chat is populated with all the messages sent in the channel with the user who sent it as well
+as the avatar of that user.
+
 #### User Settings
-The user settings component allows a user with admin permissions to be able to create new users and escalate a users permissions. User with super permissions can also completely delete another user.
+##### Modify User Permissions
+This allows a user with appropriate permissions(super,group) to upgrade-only a user with same or lower permissions.
+
+##### Create User
+This allows a super/group user to create a new user by providing a username and password. This new user is then added to the database.
 #### Group Settings
-The group settings component allows a group admin to see group options, such as creating and deleting groups as well as adding and removing users from groups.
+##### Create Group
+This allows a group user to create a new group by providing the group's name
+##### Delete Group
+This allows a group user to delete a group by providing the group's name
+##### Add user to group
+This allows a group user to add a user to the group by providing the username and the group
+##### Delete user from group
+This allows a group user to delete a user from the group by providing the username and the group
 #### Channel Settings
-The channel settings component allows a group admin to create and delete channels as well as add and remove users from channels.
+##### Create Channel
+This allows a group user to create a new channel by providing the group and channel names.
+##### Delete Channel
+This allows a group user to delete a channel by providing the group and channel names.
+##### Add user to Channel
+This allows a group user to add a user to the channel by providing the group,channel and user names.
+##### Delete user from Channel
+This allows a group user to delete a user from a channel by providing the group,channel and user names.
+
 ### Services
 #### User Manager
 The user manager service allows the frontend to interact with users on the backend via requests. The user manager hooks into the user

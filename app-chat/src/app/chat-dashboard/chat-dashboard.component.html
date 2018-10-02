@@ -1,5 +1,4 @@
 <div class="container">
-  <div></div>
   <div id="header">
       <h2 style="color:white">Welcome, {{username}}</h2>
       <button (click)="logout()">Logout</button>
@@ -11,53 +10,53 @@
       <button *ngIf="userHasPermission" (click)="showSettings('channel')">Channel Settings</button>
   </div>
   <div></div>
-  <div id="lists">
-      <div id="userList">
-          <table id="userTable">
-            <tr>
-              <th>
-                <b>Users</b>
-              </th>
-            <br>
-            <br>
-            </tr>
-            <tr id="user" *ngFor="let user of users">{{user}}</tr><br>
-          </table>
-        </div>
-        <div id="groupList">
-            <table>
-              <tr>
-                <th>Groups</th>
-              </tr>
-              <tr *ngFor="let group of groups">
-                <button class="link" id="groupButton" (click)="displayChannels(group)">{{group}}</button>
-              </tr>
-            </table>
+  <div class="messagecontainer">
+    <div id="groupList" class="list">
+      <div *ngFor="let group of groups" id="groupButton" (click)="displayChannels(group)" class="accordion">
+          &nbsp;{{group}}
+        <div *ngFor="let channel of channels" id="channelButton" class="accordion">
+          <div *ngIf="channel.group_name == group" (click)="joinChannel(channel.channel_name)">
+            &nbsp;&nbsp;&nbsp;&nbsp;{{channel.channel_name}}
           </div>
-      <div>
-          <br>
-          <table *ngIf="channels">
-            <tr>
-              <th>Channels</th>
-            </tr>
-            <tr *ngFor="let channel of channels">
-              <button id="channelButton" class="link" (click)="joinChannel(channel)">{{channel}}</button>
-            </tr>
-          </table>
-        </div>
-  </div>
-  <div *ngIf="inChannel">
-    <h4 style="color:orange;font-size: 22px;">{{inChannel}}</h4>
-    <div id="chat-box">
-      <div id="msg_box">
-        <div id="usermsg"  *ngFor='let msg of messages'>
-          <div *ngIf="msg.type == 'message'"><p style="font-size: 10px;color:gold"><br>&nbsp;&nbsp;{{msg.user}}</p>&nbsp;&nbsp;{{msg.text}}</div>
-          <div *ngIf="msg.type =='announcement'"><br>&nbsp;{{msg.text}}</div>
         </div>
       </div>
     </div>
-    <input style="width:645px" [(ngModel)]="message" type="text" placeholder="enter message">
-    <button style="width: 50px" (click)="sendMessage()">Send</button>
+
+    <div id="msg_area">
+        <div *ngIf="inChannel" id="channelJoinedDiv"><div id="channelJoinedText">
+            {{inChannel}}
+          </div></div>
+        <div  id="chat-box">
+          <div id="msg_box">
+            <table id="usermsg"  *ngFor='let msg of messages'>
+                <tr style="font-size: 11px;color:gold">
+                    <img style="width: 15px;height: 15px;" src="images/{{msg.avatar}}">
+                    {{msg.user}}
+                </tr>
+                <tr></tr>
+                <tr style="width: auto;max-height: 300px;">
+                  <td *ngIf="msg.type=='image'"><img style="max-width: 250px;max-height: 200px;" src="images/{{msg.image}}"></td>
+                  <td *ngIf="msg.type=='message'">{{msg.text}}</td>
+                </tr>
+                <div style="color:white;font-size:13px;" *ngIf="msg.type == 'announcement'">{{msg.text}}</div>
+          </table>
+          </div>
+        </div>
+        <div class="input">
+          <div><input (input)="imgMessage($event)" type='file' style="width: 85px;"></div>
+          <div><input  style="width:100%;" [(ngModel)]="message" type="text" placeholder=" enter message"></div>
+          <div> <button  style="width: 50px" (click)="sendMessage()">Send</button></div>
+        </div>
+
+  </div>
+  <div id="channelUserList" class="list">
+    <table style="border: none;background-color: none;">
+      <tr *ngFor="let user of channelUsers">
+        <td><img style="width: 20px;height: 20px;" src="images/{{user.image}}"></td>
+        <td style="color:white;">{{user.username}}</td>
+      </tr>
+    </table>
+  </div>
   </div>
   <div class="settings">
       <app-channel-settings *ngIf="settingsSelect == 'channel'"></app-channel-settings>

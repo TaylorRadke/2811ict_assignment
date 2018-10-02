@@ -3,7 +3,7 @@ import {SocketService} from '../api-services/socket.service';
 import {Router} from '@angular/router';
 import {UserManagerService} from '../api-services/user-manager.service';
 import {ChannelManagerService} from '../api-services/channel-manager.service';
-import {GroupManagerService} from '../api-services/group-manager.service';
+import {ImageuploadService} from '../api-services/imageupload.service';
 
 @Component({
   selector: 'app-chat',
@@ -14,41 +14,38 @@ export class ChatDashboardComponent implements OnInit {
   username:string;
   messages;
   message:string;
-  users;
   groups;
   settingsSelect;
   userHasPermission;
   channels;
   channelUsers;
-  showUsers;
-  chatDisplay;
   inChannel;
   group;
+  selectedImage;
+  users;
+  avatar;
 
   constructor(private socket:SocketService, private router:Router,
     private userManager:UserManagerService, private channelManager:ChannelManagerService,
-    private groupManager:GroupManagerService) { }
+    private img:ImageuploadService) { }
 
   ngOnInit() {
     
     this.username = sessionStorage.getItem("username");
     if (this.username === "undefined") this.logout();
-    this.chatDisplay = false;
 
     this.userManager.getPermissions(this.username).subscribe(res=>{
       if (res["permissions"] == "group" || res["permissions"] == "super") this.userHasPermission = true;
     });
-
-    this.getUserGroups();
     this.getUsers();
+    this.getUserGroups();
     this.socket.listenUpdate().subscribe(()=>{
         this.getUserGroups();
         this.getUsers();
-        this.getUserGroups();
         if(this.group) this.displayChannels(this.group);
+        if (this.inChannel){this.showUsersInChannel(this.inChannel);}
     });
   }
-
   //Logout as a user
   logout(){
     this.socket.leaveRoom();
@@ -56,6 +53,14 @@ export class ChatDashboardComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
+  getUserImage(){
+    this.users.forEach(element=>{
+      if (element.username == this.username){
+        this.avatar = element.image;
+        if (this.avatar === "undefined") this.avatar = "generic-avatar.png"; 
+      }
+    })
+  }
   
   showSettings(selectedSetting:string){
     this.settingsSelect = selectedSetting;
@@ -78,9 +83,24 @@ export class ChatDashboardComponent implements OnInit {
   showUsersInChannel(channel:string){
     this.channelManager.getChannelUsers(this.group,channel).subscribe(res=>{
       this.channelUsers = res["users"];
-      this.showUsers = true;
-      this.chatDisplay = true;
+      this.userManager.getUsers().subscribe(res=>{
+        var a = [];
+        this.channelUsers.forEach(element=>{
+          res["users"].forEach(user=>{
+            if (element == user.username) a.push(user);
+          })
+        })
+        this.channelUsers = a;
+      })
+      
     });
+  }
+
+  getUsers(){
+    this.userManager.getUsers().subscribe(res=>{
+      this.users = res["users"];
+      this.getUserImage();
+    })
   }
 
   joinChannel(channel:string){
@@ -90,25 +110,32 @@ export class ChatDashboardComponent implements OnInit {
 
     this.socket.getMessages().subscribe(res=>{
       this.messages=res["messages"];
+      this.socket.newMessage().subscribe(res=>{
+        this.messages.push(res["message"]);
+      });
     });
+    this.showUsersInChannel(this.inChannel);
 
-    this.socket.newMessage().subscribe(res=>{
-      this.messages.push(res["message"]);
-    });
-
-
-  }
-
-  getUsers(){
-    this.userManager.getUsers().subscribe(res=>{
-      this.users = res["users"];
-    });
   }
 
   sendMessage(){
     if (this.message != ''){
-      this.socket.sendMessage(this.message,this.username);
+      this.socket.sendMessage(this.message,this.avatar);
       this.message = '';
+    }
+  }
+
+  imgMessage(event){
+    this.selectedImage = event.target.files[0];
+
+    if(confirm("Upload " + this.selectedImage.name + "?")){
+      var fd = new FormData();
+      fd.append('image',this.selectedImage,this.selectedImage.name);
+      this.img.imgUpload(fd).subscribe(res=>{
+        if (res["result"] == "ok"){
+          this.socket.sendImage(this.selectedImage.name,this.avatar);
+        }
+      })
     }
   }
 }

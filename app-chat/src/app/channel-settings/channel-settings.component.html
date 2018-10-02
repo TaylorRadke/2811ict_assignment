@@ -39,7 +39,7 @@
       <option *ngFor="let channel of channels" [value]="channel">{{channel}}</option>
     </select><br><br>
     <p>User</p>&nbsp;&nbsp;<select *ngIf="selectGroup && selectChannel && users" [(ngModel)]="selectUser">
-      <option *ngFor="let user of users" [value]="user">{{user}}</option>
+      <option *ngFor="let user of groupUsers" [value]="user">{{user}}</option>
     </select>&nbsp;&nbsp;
     <button *ngIf="selectGroup && selectChannel && selectUser" (click)="addUserChannel()">Confirm</button>
   </div>

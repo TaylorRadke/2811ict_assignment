@@ -10,6 +10,10 @@ export class ImageuploadService {
 
 
   imgUpload(fd){
-    return this.http.post<any>("/api/user/image",fd);
+    return this.http.post<any>("/api/user/image/upload",fd);
+  }
+
+  imgUploadDB(img){
+    return this.http.post("/api/user/image/name",{"image":img,"username":sessionStorage.getItem("username")});
   }
 }

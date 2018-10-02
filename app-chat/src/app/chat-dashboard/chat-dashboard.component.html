@@ -28,16 +28,17 @@
           </div></div>
         <div  id="chat-box">
           <div id="msg_box">
-            <table id="usermsg"  *ngFor='let msg of messages; let i = index;'>
+            <table id="usermsg"  *ngFor='let msg of messages'>
                 <tr style="font-size: 11px;color:gold">
                     <img style="width: 15px;height: 15px;" src="images/{{msg.avatar}}">
                     {{msg.user}}
                 </tr>
                 <tr></tr>
                 <tr style="width: auto;max-height: 300px;">
-                  <td *ngIf="msg.type=='image'"><img style="max-width: 250px;max-height: 250px;" src="images/{{msg.image}}"></td>
+                  <td *ngIf="msg.type=='image'"><img style="max-width: 250px;max-height: 200px;" src="images/{{msg.image}}"></td>
                   <td *ngIf="msg.type=='message'">{{msg.text}}</td>
                 </tr>
+                <div style="color:white;font-size:13px;" *ngIf="msg.type == 'announcement'">{{msg.text}}</div>
           </table>
           </div>
         </div>

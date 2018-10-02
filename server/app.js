@@ -19,15 +19,17 @@ app.use(express.static(path.join(__dirname,'../app-chat/dist/app-chat/')));
 MongoDB.connect(URL,function(err,db){
     if (err) throw err;
     dbo = db.db('Chat_app_db');
-    console.log("Connected to db");
 
     require('./routes/users')(app,dbo,formidable);
     require("./routes/groups")(app,dbo);
     require('./routes/channels.js')(app,dbo);
     require('./socket.js')(app,io,dbo);
     require('./routes/index.js')(app,path);
-
     http.listen(3000,function(){
         console.log("Server listening on port 3000");
     });
 });
+
+module.exports = app;
+
+

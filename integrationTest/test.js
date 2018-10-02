@@ -1,13 +1,37 @@
-var assert = require('assert');
-describe('Tests for function one', () => {
-  describe('Test Case 1 #fnOne()',() => {
-    it('should return -1 when the value is not present', () => {
-      assert.equal([1,2,3].indexOf(4), -1);
-    });
-  });
-  describe('Test Case #fnOne()', () => {
-    it('should return 3 as the value is present', () => {
-      assert.equal([1,2,3,4,5].indexOf(4), 3);
-    });
-  });
-});
+var supertest = require('supertest');  
+var chai = require('chai');  
+var uuid = require('uuid');  
+var app = require('../server/app.js');
+
+global.app = app;  
+global.uuid = uuid;  
+global.expect = chai.expect;  
+global.request = supertest(app); 
+
+describe('Task API Routes',function(){
+  // beforeEach(function(done){
+  //   app.db.object = {};
+  //   app.db.tasks = [{
+  //     id : uuid(),
+  //     title: "study",
+  //     done:false
+  //   },{
+  //     id : uuid(),
+  //     title : "work",
+  //     done : true
+  //   }];
+  //   app.db.write();
+  //   done();
+  // });
+
+  describe('GET /api/users',function(){
+    it("returns list of users",function(done){
+      request.get('localhost:3000/api/users')
+      .expect(200)
+      .end(function(err,res){
+        done(err);
+      })
+    })
+  })
+})
+

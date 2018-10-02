@@ -31,7 +31,6 @@ module.exports = function(app,dbo,formidable){
         
         var uname = req.body.username;
         var password = req.body.password;
-        console.log(password)
         dbo.collection("users").findOne({"username":uname},function(err,result){
             if (err) console.log(err);
             else{
@@ -50,6 +49,7 @@ module.exports = function(app,dbo,formidable){
 
     //Get a list of all users
     app.get('/api/users',function(req,res){
+        console.log("getting users");
         dbo.collection("users").find({}).toArray(function(err,result){
             if (err) console.log(err);
             var users = [];
@@ -90,7 +90,7 @@ module.exports = function(app,dbo,formidable){
         });
     });
 
-    //upload user avatar(image)
+    //upload image to server
     app.post('/api/user/image/upload',function(req,res){
         var form = new formidable.IncomingForm({uploadDir:'./userImages'});
 

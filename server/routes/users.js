@@ -64,7 +64,8 @@ module.exports = function(app,dbo,formidable){
     app.post('/api/users/login',function(req,res) {
         var username = req.body.username;
         var password = req.body.password;
-        var authLogin = false;
+        var authLogin = false ;
+       
         dbo.collection("users").findOne({"username":username},function(err,result){
             if (err) throw err;
             else{
